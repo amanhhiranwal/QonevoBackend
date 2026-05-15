@@ -1,0 +1,8 @@
+.env
+.env.*
+*.env
+vendor/
+bin/
+dist/
+build/
+.DS_Store
