@@ -34,8 +34,38 @@ func (s *AuthService) Login(ctx context.Context, email, password string) (string
 	return utils.GenerateToken(user.ID, s.secret, s.expiry)
 }
 
-func (s *AuthService) Register(ctx context.Context, email, password string) (*models.User, error) {
-	// check if user exists (optional improvement later)
+// func (s *AuthService) Register(ctx context.Context, email, password string) (*models.User, error) {
+// 	// check if user exists (optional improvement later)
+
+// 	hash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	user := &models.User{
+// 		Email:        email,
+// 		PasswordHash: string(hash),
+// 	}
+
+// 	err = s.repo.Create(ctx, user)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	return user, nil
+// }
+
+func (s *AuthService) Register(
+	ctx context.Context,
+	firstName, lastName, email, password string,
+	phone *string,
+) (*models.User, error) {
+
+	// optional: check if user exists
+	existing, _ := s.repo.FindByEmail(ctx, email)
+	if existing != nil {
+		return nil, errors.New("user already exists")
+	}
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 	if err != nil {
@@ -43,7 +73,10 @@ func (s *AuthService) Register(ctx context.Context, email, password string) (*mo
 	}
 
 	user := &models.User{
+		FirstName:    firstName,
+		LastName:     lastName,
 		Email:        email,
+		Phone:        phone,
 		PasswordHash: string(hash),
 	}
 
