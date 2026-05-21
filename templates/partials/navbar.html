@@ -1,0 +1,44 @@
+{{define "navbar"}}
+
+<header class="dashboard-navbar">
+
+    <div>
+
+        <h1 class="dashboard-title">
+            {{.Title}}
+        </h1>
+
+        <p class="dashboard-subtitle">
+            Welcome back 👋
+        </p>
+
+    </div>
+
+    <div class="navbar-actions">
+
+        <a
+            href="/register"
+            class="nav-btn primary-btn"
+        >
+            Register
+        </a>
+
+        <form
+            method="POST"
+            action="/logout"
+        >
+
+            <button
+                type="submit"
+                class="nav-btn logout-btn"
+            >
+                Logout
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+{{end}}

@@ -1,0 +1,103 @@
+{{template "header" .}}
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            <h1>Create Account</h1>
+            <p>Join Qonevo today</p>
+        </div>
+
+        <form
+            class="auth-form"
+            method="POST"
+            action="/register-post"
+        >
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label class="form-label">
+                        First Name
+                    </label>
+
+                    <input
+                        class="form-input"
+                        name="first_name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Last Name
+                    </label>
+
+                    <input
+                        class="form-input"
+                        name="last_name"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    Email
+                </label>
+
+                <input
+                    class="form-input"
+                    type="email"
+                    name="email"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    Password
+                </label>
+
+                <input
+                    class="form-input"
+                    type="password"
+                    name="password"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    Phone
+                </label>
+
+                <input
+                    class="form-input"
+                    name="phone"
+                >
+            </div>
+
+            <button
+                class="auth-btn"
+                type="submit"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+            Already have an account?
+            <a href="/login">
+                Sign in
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{{template "footer" .}}

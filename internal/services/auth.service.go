@@ -4,86 +4,89 @@ import (
 	"context"
 	"errors"
 
-	"golang.org/x/crypto/bcrypt"
-
+	"qonevo-backend/internal/config"
 	"qonevo-backend/internal/models"
 	"qonevo-backend/internal/repositories"
 	"qonevo-backend/internal/utils"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthService struct {
-	repo   *repositories.UserRepo
-	secret string
-	expiry int
+	repo *repositories.UserRepository
+	cfg  *config.Config
 }
 
-func NewAuthService(r *repositories.UserRepo, secret string, expiry int) *AuthService {
-	return &AuthService{repo: r, secret: secret, expiry: expiry}
-}
+func NewAuthService(
+	repo *repositories.UserRepository,
+	cfg *config.Config,
+) *AuthService {
 
-func (s *AuthService) Login(ctx context.Context, email, password string) (string, error) {
-	user, err := s.repo.FindByEmail(ctx, email)
-	if err != nil {
-		return "", errors.New("invalid credentials")
+	return &AuthService{
+		repo: repo,
+		cfg:  cfg,
 	}
-
-	if bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)) != nil {
-		return "", errors.New("invalid credentials")
-	}
-
-	return utils.GenerateToken(user.ID, s.secret, s.expiry)
 }
-
-// func (s *AuthService) Register(ctx context.Context, email, password string) (*models.User, error) {
-// 	// check if user exists (optional improvement later)
-
-// 	hash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	user := &models.User{
-// 		Email:        email,
-// 		PasswordHash: string(hash),
-// 	}
-
-// 	err = s.repo.Create(ctx, user)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return user, nil
-// }
 
 func (s *AuthService) Register(
 	ctx context.Context,
-	firstName, lastName, email, password string,
+	firstName string,
+	lastName string,
+	email string,
 	phone *string,
-) (*models.User, error) {
+	password string,
+) error {
 
-	// optional: check if user exists
-	existing, _ := s.repo.FindByEmail(ctx, email)
-	if existing != nil {
-		return nil, errors.New("user already exists")
+	existingUser, err := s.repo.FindByEmail(ctx, email)
+
+	if err == nil && existingUser != nil {
+		return errors.New("email already exists")
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+	hashedPassword, err := bcrypt.GenerateFromPassword(
+		[]byte(password),
+		bcrypt.DefaultCost,
+	)
+
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	user := &models.User{
-		FirstName:    firstName,
-		LastName:     lastName,
-		Email:        email,
-		Phone:        phone,
-		PasswordHash: string(hash),
+		FirstName:   firstName,
+		LastName:    lastName,
+		Email:       email,
+		Phone:       phone,
+		PasswordHash: string(hashedPassword),
 	}
 
-	err = s.repo.Create(ctx, user)
+	return s.repo.Create(ctx, user)
+}
+
+func (s *AuthService) Login(
+	ctx context.Context,
+	email string,
+	password string,
+) (string, error) {
+
+	user, err := s.repo.FindByEmail(ctx, email)
+
 	if err != nil {
-		return nil, err
+		return "", errors.New("invalid credentials")
 	}
 
-	return user, nil
+	err = bcrypt.CompareHashAndPassword(
+		[]byte(user.PasswordHash),
+		[]byte(password),
+	)
+
+	if err != nil {
+		return "", errors.New("invalid credentials")
+	}
+
+	return utils.GenerateToken(
+		user.ID,
+		s.cfg.JWTSecret,
+		s.cfg.JWTExpiryHours,
+	)
 }

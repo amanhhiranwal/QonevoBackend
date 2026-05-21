@@ -1,0 +1,621 @@
+/* =========================================
+   Auth Layout
+========================================= */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background:
+    radial-gradient(circle at top left, #7c3aed, transparent 40%),
+    radial-gradient(circle at bottom right, #2563eb, transparent 40%),
+    #0f172a;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* =========================================
+   Auth Card
+========================================= */
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+}
+
+/* =========================================
+   Branding
+========================================= */
+
+.auth-logo {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.auth-logo h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.auth-logo p {
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* =========================================
+   Form
+========================================= */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-input {
+  width: auto;            /* takes full width of parent */
+
+  padding: 12px 14px;     /* slightly reduced for balance */
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+
+  font-size: 15px;
+  line-height: 1.4;
+
+  background: #fff;
+  box-sizing: border-box; /* ensures padding doesn't add width */
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow:
+    0 0 0 4px rgba(79, 70, 229, 0.12);
+}
+
+/* =========================================
+   Buttons
+========================================= */
+
+.auth-btn {
+  margin-top: 10px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #7c3aed
+    );
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    box-shadow 0.2s;
+}
+
+.auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 20px rgba(79, 70, 229, 0.35);
+}
+
+.auth-btn:active {
+  transform: translateY(0);
+}
+
+/* =========================================
+   Footer
+========================================= */
+
+.auth-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.auth-footer a {
+  color: #4f46e5;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   Alerts
+========================================= */
+
+.alert {
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.alert-success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width: 640px) {
+
+  .auth-card {
+    padding: 28px;
+    border-radius: 16px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-logo h1 {
+    font-size: 28px;
+  }
+}
+
+
+/* ============================================
+   PRODUCTS PAGE
+============================================ */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.page-header p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.table-card,
+.form-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.06);
+}
+
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-table thead {
+  background: #f9fafb;
+}
+
+.products-table th {
+  text-align: left;
+  padding: 16px;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.products-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+
+.products-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.product-name {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-name strong {
+  color: #111827;
+}
+
+.product-name span {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-table {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn-table.edit {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.btn-table.delete {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.empty-row {
+  text-align: center;
+  padding: 40px !important;
+  color: #9ca3af;
+}
+
+/* ============================================
+   PRODUCT FORM
+============================================ */
+
+.form-header {
+  margin-bottom: 24px;
+}
+
+.form-header h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.form-header p {
+  color: #6b7280;
+}
+
+.product-form {
+  width: 100%;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  );
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow:
+    0 0 0 4px rgba(99,102,241,0.12);
+}
+
+.checkbox-group {
+  justify-content: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-actions {
+  margin-top: 32px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.btn-primary,
+.btn-secondary {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    #6366f1,
+    #8b5cf6
+  );
+  color: white;
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+
+@media (max-width: 768px) {
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .table-card {
+    overflow-x: auto;
+  }
+
+  .products-table {
+    min-width: 800px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.edit-product-image-wrapper {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+.edit-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+.product-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.gallery-item {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.primary-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: #111;
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 999px;
+}
+
+.table-image-gallery {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.table-gallery-item {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    background: #fff;
+}
+
+.table-gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.edit-product-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.edit-gallery-card {
+    border: 1px solid #eee;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.edit-gallery-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #f8f8f8;
+}
+
+.edit-gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.primary-image-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #111;
+    color: #fff;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+.edit-gallery-actions {
+    display: flex;
+    gap: 10px;
+    padding: 16px;
+}
+
+
+
+.empty-image-state {
+    border: 2px dashed #ddd;
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    margin-top: 16px;
+}
+
+.empty-image-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+}
+
+.images-subtitle {
+    margin-top: 4px;
+    color: #666;
+    font-size: 14px;
+}
+
+.upload-box {
+    margin-top: 10px;
+}
+
+
+
+

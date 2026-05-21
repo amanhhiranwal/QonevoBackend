@@ -1,0 +1,195 @@
+/* =========================================
+   Auth Layout
+========================================= */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background:
+    radial-gradient(circle at top left, #7c3aed, transparent 40%),
+    radial-gradient(circle at bottom right, #2563eb, transparent 40%),
+    #0f172a;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* =========================================
+   Auth Card
+========================================= */
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+}
+
+/* =========================================
+   Branding
+========================================= */
+
+.auth-logo {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.auth-logo h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.auth-logo p {
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* =========================================
+   Form
+========================================= */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-input {
+  width: auto;
+  padding: 14px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 15px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.1s;
+  background: #fff;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow:
+    0 0 0 4px rgba(79, 70, 229, 0.12);
+}
+
+/* =========================================
+   Buttons
+========================================= */
+
+.auth-btn {
+  margin-top: 10px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #7c3aed
+    );
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    box-shadow 0.2s;
+}
+
+.auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 20px rgba(79, 70, 229, 0.35);
+}
+
+.auth-btn:active {
+  transform: translateY(0);
+}
+
+/* =========================================
+   Footer
+========================================= */
+
+.auth-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.auth-footer a {
+  color: #4f46e5;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   Alerts
+========================================= */
+
+.alert {
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.alert-success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width: 640px) {
+
+  .auth-card {
+    padding: 28px;
+    border-radius: 16px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-logo h1 {
+    font-size: 28px;
+  }
+}

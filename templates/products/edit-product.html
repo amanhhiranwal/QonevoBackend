@@ -1,0 +1,325 @@
+{{define "edit-product.html"}}
+
+{{template "header" .}}
+
+<div class="dashboard-layout">
+
+    {{template "sidebar" .}}
+
+    <main class="dashboard-main">
+
+        {{template "navbar" .}}
+
+        <section class="dashboard-content">
+
+            <div class="form-card">
+
+                <!-- HEADER -->
+
+                <div class="form-header">
+                    <h1>Edit Product</h1>
+                    <p>Update product information and manage images</p>
+                </div>
+
+                <!-- ===================================== -->
+                <!-- PRODUCT UPDATE FORM -->
+                <!-- ===================================== -->
+
+                <form
+                    method="POST"
+                    action="/products/update/{{.Product.ID}}"
+                    enctype="multipart/form-data"
+                    class="product-form"
+                >
+
+                    <div class="form-grid">
+
+                        <!-- PRODUCT NAME -->
+
+                        <div class="form-group">
+
+                            <label>Product Name</label>
+
+                            <input
+                                type="text"
+                                name="name"
+                                required
+                                value="{{.Product.Name}}"
+                                class="product-input"
+                            >
+
+                        </div>
+
+                        <!-- SIZE -->
+
+                        <div class="form-group">
+
+                            <label>Size</label>
+
+                            <input
+                                type="text"
+                                name="size"
+                                value="{{.Product.Size}}"
+                                class="product-input"
+                            >
+
+                        </div>
+
+                        <!-- SUBHEADING -->
+
+                        <div class="form-group full-width">
+
+                            <label>Subheading</label>
+
+                            <textarea
+                                name="subheading"
+                                rows="3"
+                                class="product-input"
+                            >{{.Product.Subheading}}</textarea>
+
+                        </div>
+
+                        <!-- CHIPSET -->
+
+                        <div class="form-group">
+
+                            <label>Chipset</label>
+
+                            <input
+                                type="text"
+                                name="chipset"
+                                value="{{.Product.Chipset}}"
+                                class="product-input"
+                            >
+
+                        </div>
+
+                        <!-- STORAGE -->
+
+                        <div class="form-group">
+
+                            <label>Storage</label>
+
+                            <input
+                                type="text"
+                                name="storage"
+                                value="{{.Product.Storage}}"
+                                class="product-input"
+                            >
+
+                        </div>
+
+                        <!-- RESOLUTION -->
+
+                        <div class="form-group">
+
+                            <label>Resolution</label>
+
+                            <input
+                                type="text"
+                                name="resolution"
+                                value="{{.Product.Resolution}}"
+                                class="product-input"
+                            >
+
+                        </div>
+
+                        <!-- GOOGLE INTEGRATION -->
+
+                        <div class="form-group checkbox-group">
+
+                            <label class="checkbox-label">
+
+                                <input
+                                    type="checkbox"
+                                    name="google_integration"
+                                    {{if .Product.GoogleIntegration}}checked{{end}}
+                                >
+
+                                Google Integration
+
+                            </label>
+
+                        </div>
+
+                        <!-- UPLOAD NEW IMAGES -->
+
+                        <div class="form-group full-width">
+
+                            <label>Upload More Images</label>
+
+                            <div class="upload-box">
+
+                                <input
+                                    type="file"
+                                    name="images"
+                                    multiple
+                                    class="product-input"
+                                >
+
+                                <p class="upload-helper">
+                                    You can upload multiple product images at once.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ACTIONS -->
+
+                    <div class="form-actions">
+
+                        <a href="/products" class="btn-secondary">
+                            Cancel
+                        </a>
+
+                        <button type="submit" class="btn-primary">
+                            Update Product
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <!-- ===================================== -->
+                <!-- PRODUCT IMAGES SECTION -->
+                <!-- ===================================== -->
+
+                <div class="product-images-section">
+
+                    <div class="images-header">
+
+                        <div>
+
+                            <label>
+                                Product Images
+                            </label>
+
+                            <p class="images-subtitle">
+                                Manage uploaded product gallery
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {{if .Product.Images}}
+
+                        <div class="edit-product-gallery">
+
+                            {{range .Product.Images}}
+
+                                <div class="edit-gallery-card">
+
+                                    <!-- IMAGE -->
+
+                                    <div class="edit-gallery-image-wrapper">
+
+                                        <img
+                                            src="{{.ImageURL}}"
+                                            alt="Product Image"
+                                            class="edit-gallery-image"
+                                        >
+
+                                        {{if .IsPrimary}}
+
+                                            <span class="primary-image-badge">
+                                                Primary
+                                            </span>
+
+                                        {{end}}
+
+                                    </div>
+
+                                    <!-- ACTIONS -->
+
+                                    <div class="edit-gallery-actions">
+
+                                        <!-- SET PRIMARY -->
+
+                                        <form
+                                            method="POST"
+                                            action="/products/image/primary/{{.ID}}"
+                                            class="image-action-form"
+                                        >
+
+                                            <!-- <button
+                                                type="submit"
+                                                class="btn-image-action secondary"
+                                            >
+
+                                                {{if .IsPrimary}}
+
+                                                    Primary
+
+                                                {{else}}
+
+                                                    Set Primary
+
+                                                {{end}}
+
+                                            </button> -->
+
+                                        </form>
+
+                                        <!-- DELETE -->
+
+                                        <form
+                                            method="POST"
+                                            action="/products/image/delete/{{.ID}}"
+                                            class="image-action-form"
+                                            onsubmit="return confirm('Delete this image?')"
+                                        >
+
+                                            <button
+                                                type="submit"
+                                                class="btn-image-action danger"
+                                            >
+                                                Delete
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </div>
+
+                            {{end}}
+
+                        </div>
+
+                    {{else}}
+
+                        <div class="empty-image-state">
+
+                            <div class="empty-image-icon">
+                                🖼️
+                            </div>
+
+                            <h4>
+                                No Images Uploaded
+                            </h4>
+
+                            <p>
+                                Upload product images to build your gallery.
+                            </p>
+
+                        </div>
+
+                    {{end}}
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+{{template "footer" .}}
+
+{{end}}

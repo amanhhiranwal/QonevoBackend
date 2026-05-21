@@ -1,0 +1,53 @@
+{{define "dashboard.html"}}
+
+{{template "header" .}}
+
+<div class="dashboard-layout">
+
+    {{template "sidebar" .}}
+
+    <main class="dashboard-main">
+
+        {{template "navbar" .}}
+
+        <section class="dashboard-content">
+
+            <div class="dashboard-grid">
+
+                <!-- TOTAL PRODUCTS -->
+
+                <div class="dashboard-stat-card">
+
+                    <div class="dashboard-stat-icon">
+                        📦
+                    </div>
+
+                    <div class="dashboard-stat-content">
+
+                        <h3>
+                            Total Products
+                        </h3>
+
+                        <h2>
+                            {{.TotalProducts}}
+                        </h2>
+
+                        <p>
+                            Products currently in inventory
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+{{template "footer" .}}
+
+{{end}}

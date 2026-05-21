@@ -1,0 +1,132 @@
+{{define "create-product.html"}}
+
+{{template "header" .}}
+<div class="dashboard-layout">
+
+    {{template "sidebar" .}}
+
+    <main class="dashboard-main">
+
+        {{template "navbar" .}}
+
+        <section class="dashboard-content">
+
+            <div class="form-card">
+
+                <div class="form-header">
+                    <h1>Create Product</h1>
+                    <p>Add a new product to inventory</p>
+                </div>
+
+                <form
+                    method="POST"
+                    action="/products"
+                    enctype="multipart/form-data"
+                    class="product-form"
+                >
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label>Product Name</label>
+                            <input
+                                type="text"
+                                name="name"
+                                required
+                                class="product-input"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>Size</label>
+                            <input
+                                type="text"
+                                name="size"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Subheading</label>
+                            <textarea
+                                name="subheading"
+                                rows="3"
+                                class="product-input"
+                            ></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Chipset</label>
+                            <input
+                                type="text"
+                                name="chipset"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>Storage</label>
+                            <input
+                                type="text"
+                                name="storage"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>Resolution</label>
+                            <input
+                                type="text"
+                                name="resolution"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    name="google_integration"
+                                >
+                                Google Integration
+                            </label>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Product Images</label>
+                            <input
+                                type="file"
+                                name="images"
+                                multiple
+                                class="product-input"
+                            >
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="/products" class="btn-secondary">
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn-primary"
+                        >
+                            Save Product
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+{{template "footer" .}}
+
+{{end}}
