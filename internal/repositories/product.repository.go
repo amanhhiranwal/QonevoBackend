@@ -32,13 +32,9 @@ func (r *ProductRepository) CreateProduct(
 		name,
 		slug,
 		subheading,
-		size,
-		chipset,
-		storage,
-		resolution,
 		google_integration
 	)
-	VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+	VALUES ($1, $2, $3, $4)
 	RETURNING id
 	`
 
@@ -49,10 +45,6 @@ func (r *ProductRepository) CreateProduct(
 		product.Name,
 		product.Slug,
 		product.Subheading,
-		product.Size,
-		product.Chipset,
-		product.Storage,
-		product.Resolution,
 		product.GoogleIntegration,
 	).Scan(&productID)
 
@@ -91,6 +83,35 @@ func (r *ProductRepository) CreateProductImage(
 }
 
 // =====================================
+// Create Product Specification
+// =====================================
+
+func (r *ProductRepository) CreateProductSpecification(
+	specification *models.ProductSpecification,
+) error {
+
+	query := `
+	INSERT INTO product_specifications (
+		product_id,
+		category,
+		spec_key,
+		spec_value
+	)
+	VALUES ($1, $2, $3, $4)
+	`
+
+	_, err := r.db.Exec(
+		query,
+		specification.ProductID,
+		specification.Category,
+		specification.SpecKey,
+		specification.SpecValue,
+	)
+
+	return err
+}
+
+// =====================================
 // Get Products
 // =====================================
 
@@ -105,10 +126,6 @@ func (r *ProductRepository) GetProducts() (
 		p.name,
 		p.slug,
 		p.subheading,
-		p.size,
-		p.chipset,
-		p.storage,
-		p.resolution,
 		p.google_integration,
 		p.is_active,
 		pi.image_url,
@@ -140,10 +157,6 @@ func (r *ProductRepository) GetProducts() (
 			&product.Name,
 			&product.Slug,
 			&product.Subheading,
-			&product.Size,
-			&product.Chipset,
-			&product.Storage,
-			&product.Resolution,
 			&product.GoogleIntegration,
 			&product.IsActive,
 			&product.Thumbnail,
@@ -161,7 +174,6 @@ func (r *ProductRepository) GetProducts() (
 		)
 	}
 
-	// check row iteration errors
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
@@ -169,68 +181,6 @@ func (r *ProductRepository) GetProducts() (
 	return products, nil
 }
 
-// =====================================
-// Get Product By ID
-// =====================================
-
-// func (r *ProductRepository) GetProductByID(
-// 	id int64,
-// ) (*models.Product, error) {
-
-// 	query := `
-// 	SELECT
-// 		p.id,
-// 		p.name,
-// 		p.slug,
-// 		p.subheading,
-// 		p.size,
-// 		p.chipset,
-// 		p.storage,
-// 		p.resolution,
-// 		p.google_integration,
-// 		p.is_active,
-// 		pi.image_url,
-// 		p.created_at,
-// 		p.updated_at
-// 	FROM products p
-// 	LEFT JOIN product_images pi
-// 		ON pi.product_id = p.id
-// 		AND pi.is_primary = true
-// 	WHERE p.id = $1
-// 	`
-
-// 	var product models.Product
-
-// 	err := r.db.QueryRow(
-// 		query,
-// 		id,
-// 	).Scan(
-// 		&product.ID,
-// 		&product.Name,
-// 		&product.Slug,
-// 		&product.Subheading,
-// 		&product.Size,
-// 		&product.Chipset,
-// 		&product.Storage,
-// 		&product.Resolution,
-// 		&product.GoogleIntegration,
-// 		&product.IsActive,
-// 		&product.Thumbnail,
-// 		&product.CreatedAt,
-// 		&product.UpdatedAt,
-// 	)
-
-// 	if err != nil {
-
-// 		if err == sql.ErrNoRows {
-// 			return nil, nil
-// 		}
-
-// 		return nil, err
-// 	}
-
-// 	return &product, nil
-// }
 // =====================================
 // Get Product By ID
 // =====================================
@@ -245,10 +195,6 @@ func (r *ProductRepository) GetProductByID(
 		p.name,
 		p.slug,
 		p.subheading,
-		p.size,
-		p.chipset,
-		p.storage,
-		p.resolution,
 		p.google_integration,
 		p.is_active,
 		pi.image_url,
@@ -271,10 +217,6 @@ func (r *ProductRepository) GetProductByID(
 		&product.Name,
 		&product.Slug,
 		&product.Subheading,
-		&product.Size,
-		&product.Chipset,
-		&product.Storage,
-		&product.Resolution,
 		&product.GoogleIntegration,
 		&product.IsActive,
 		&product.Thumbnail,
@@ -292,23 +234,57 @@ func (r *ProductRepository) GetProductByID(
 	}
 
 	// =====================================
-	// Load All Images
+	// Load Images
 	// =====================================
 
-	imageQuery := `
+	images, err := r.GetProductImagesByProductID(
+		product.ID,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	product.Images = images
+
+	// =====================================
+	// Load Specifications
+	// =====================================
+
+	specifications, err := r.GetProductSpecifications(
+		product.ID,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	product.Specifications = specifications
+
+	return &product, nil
+}
+
+// =====================================
+// Get Product Specifications
+// =====================================
+
+func (r *ProductRepository) GetProductSpecifications(
+	productID int64,
+) ([]models.ProductSpecificationCategory, error) {
+
+	query := `
 	SELECT
-		id,
-		product_id,
-		image_url,
-		is_primary
-	FROM product_images
+		category,
+		spec_key,
+		spec_value
+	FROM product_specifications
 	WHERE product_id = $1
-	ORDER BY id ASC
+	ORDER BY category ASC, id ASC
 	`
 
 	rows, err := r.db.Query(
-		imageQuery,
-		id,
+		query,
+		productID,
 	)
 
 	if err != nil {
@@ -317,36 +293,58 @@ func (r *ProductRepository) GetProductByID(
 
 	defer rows.Close()
 
-	var images []models.ProductImage
+	categoryMap := make(
+		map[string][]models.ProductSpecification,
+	)
 
 	for rows.Next() {
 
-		var image models.ProductImage
+		var category string
+		var key string
+		var value string
 
 		err := rows.Scan(
-			&image.ID,
-			&image.ProductID,
-			&image.ImageURL,
-			&image.IsPrimary,
+			&category,
+			&key,
+			&value,
 		)
 
 		if err != nil {
 			return nil, err
 		}
 
-		images = append(
-			images,
-			image,
+		categoryMap[category] = append(
+
+			categoryMap[category],
+
+			models.ProductSpecification{
+				Category:  category,
+				SpecKey:   key,
+				SpecValue: value,
+			},
 		)
 	}
 
-	product.Images = images
+	var categories []models.ProductSpecificationCategory
 
-	return &product, nil
+	for category, items := range categoryMap {
+
+		categories = append(
+
+			categories,
+
+			models.ProductSpecificationCategory{
+				Category: category,
+				Items:    items,
+			},
+		)
+	}
+
+	return categories, nil
 }
 
 // =====================================
-// Update Product
+// Delete Product Image
 // =====================================
 
 func (r *ProductRepository) DeleteProductImage(
@@ -366,6 +364,10 @@ func (r *ProductRepository) DeleteProductImage(
 	return err
 }
 
+// =====================================
+// Update Product
+// =====================================
+
 func (r *ProductRepository) UpdateProduct(
 	product *models.Product,
 ) error {
@@ -376,14 +378,10 @@ func (r *ProductRepository) UpdateProduct(
 		name = $1,
 		slug = $2,
 		subheading = $3,
-		size = $4,
-		chipset = $5,
-		storage = $6,
-		resolution = $7,
-		google_integration = $8,
-		is_active = $9,
+		google_integration = $4,
+		is_active = $5,
 		updated_at = NOW()
-	WHERE id = $10
+	WHERE id = $6
 	`
 
 	_, err := r.db.Exec(
@@ -391,10 +389,6 @@ func (r *ProductRepository) UpdateProduct(
 		product.Name,
 		product.Slug,
 		product.Subheading,
-		product.Size,
-		product.Chipset,
-		product.Storage,
-		product.Resolution,
 		product.GoogleIntegration,
 		product.IsActive,
 		product.ID,
@@ -450,7 +444,7 @@ func (r *ProductRepository) CountProducts() (
 }
 
 // =====================================
-// GET PRODUCT IMAGES
+// Get Product Images
 // =====================================
 
 func (r *ProductRepository) GetProductImagesByProductID(
@@ -509,4 +503,74 @@ func (r *ProductRepository) GetProductImagesByProductID(
 	}
 
 	return images, nil
+}
+
+func (r *ProductRepository) GetProductSpecificationsByProductID(
+	productID int64,
+) ([]models.ProductSpecificationCategory, error) {
+
+	query := `
+	SELECT
+		id,
+		product_id,
+		category,
+		spec_key,
+		spec_value
+	FROM product_specifications
+	WHERE product_id = $1
+	ORDER BY category ASC, id ASC
+	`
+
+	rows, err := r.db.Query(
+		query,
+		productID,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	categoryMap := make(
+		map[string][]models.ProductSpecification,
+	)
+
+	for rows.Next() {
+
+		var spec models.ProductSpecification
+
+		err := rows.Scan(
+			&spec.ID,
+			&spec.ProductID,
+			&spec.Category,
+			&spec.SpecKey,
+			&spec.SpecValue,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		categoryMap[spec.Category] =
+			append(
+				categoryMap[spec.Category],
+				spec,
+			)
+	}
+
+	var categories []models.ProductSpecificationCategory
+
+	for category, items := range categoryMap {
+
+		categories = append(
+			categories,
+			models.ProductSpecificationCategory{
+				Category: category,
+				Items:    items,
+			},
+		)
+	}
+
+	return categories, nil
 }

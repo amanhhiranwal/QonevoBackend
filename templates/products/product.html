@@ -30,7 +30,10 @@
 
                 </div>
 
-                <a href="/products/create" class="btn btn-primary btn-lg">
+                <a
+                    href="/products/create"
+                    class="btn btn-primary btn-lg"
+                >
                     + Add Product
                 </a>
 
@@ -49,14 +52,33 @@
                         <thead>
 
                             <tr>
+
                                 <th>ID</th>
-                                <th>Product</th>
-                                <!-- <th>Images</th> -->
-                                <th>Chipset</th>
-                                <th>Storage</th>
-                                <th>Resolution</th>
-                                <th>Status</th>
-                                <th class="text-end">Actions</th>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    Display
+                                </th>
+
+                                <th>
+                                    Touch
+                                </th>
+
+                                <th>
+                                    Features
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th class="text-end">
+                                    Actions
+                                </th>
+
                             </tr>
 
                         </thead>
@@ -65,219 +87,280 @@
 
                             {{if .Products}}
 
-                            {{range .Products}}
+                                {{range .Products}}
 
-                            <tr>
+                                <tr>
 
-                                <!-- ID -->
+                                    <!-- ID -->
 
-                                <td class="product-id">
-                                    #{{.ID}}
-                                </td>
+                                    <td class="product-id">
+                                        #{{.ID}}
+                                    </td>
 
-                                <!-- PRODUCT -->
+                                    <!-- PRODUCT -->
 
-                                <td>
+                                    <td>
 
-                                    <div class="product-info">
+                                        <div class="product-info">
 
-                                        <!-- THUMBNAIL -->
+                                            <!-- IMAGE -->
 
-                                        <div class="product-image-wrapper">
+                                            <div class="product-image-wrapper">
 
-                                            {{if .Thumbnail}}
+                                                {{if .Thumbnail}}
 
-                                            <img src="{{.Thumbnail}}" alt="{{.Name}}" class="product-image">
+                                                    <img
+                                                        src="{{.Thumbnail}}"
+                                                        alt="{{.Name}}"
+                                                        class="product-image"
+                                                    >
 
-                                            {{else}}
+                                                {{else}}
 
-                                            <div class="product-placeholder">
-                                                No Image
-                                            </div>
-
-                                            {{end}}
-
-                                        </div>
-
-                                        <!-- INFO -->
-
-                                        <div class="product-meta">
-
-                                            <h6>
-                                                {{.Name}}
-                                            </h6>
-
-                                            <p>
-                                                {{.Subheading}}
-                                            </p>
-
-                                            <span>
-                                                {{.Size}}
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-                                <!-- IMAGES -->
-
-                                <!-- <td>
-
-                                        {{if .Images}}
-
-                                            <div class="table-image-gallery">
-
-                                                {{range .Images}}
-
-                                                    <div class="table-gallery-item">
-
-                                                        <img
-                                                            src="{{.ImageURL}}"
-                                                            alt="Product Image"
-                                                            class="table-gallery-image"
-                                                        >
-
+                                                    <div class="product-placeholder">
+                                                        No Image
                                                     </div>
 
                                                 {{end}}
 
                                             </div>
 
+                                            <!-- INFO -->
+
+                                            <div class="product-meta">
+
+                                                <h6>
+                                                    {{.Name}}
+                                                </h6>
+
+                                                <p>
+                                                    {{.Subheading}}
+                                                </p>
+
+                                                {{if .Size}}
+
+                                                <span>
+                                                    {{.Size}}
+                                                </span>
+
+                                                {{end}}
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+                                    <!-- DISPLAY -->
+
+                                    <td>
+
+                                        <div class="spec-column">
+
+                                            {{if .Size}}
+
+                                            <div class="spec-item">
+
+                                                <strong>
+                                                    Size:
+                                                </strong>
+
+                                                <span>
+                                                    {{.Size}}
+                                                </span>
+
+                                            </div>
+
+                                            {{end}}
+
+                                            {{if .Resolution}}
+
+                                            <div class="spec-item">
+
+                                                <strong>
+                                                    Resolution:
+                                                </strong>
+
+                                                <span>
+                                                    {{.Resolution}}
+                                                </span>
+
+                                            </div>
+
+                                            {{end}}
+
+                                        </div>
+
+                                    </td>
+
+                                    <!-- TOUCH -->
+
+                                    <td>
+
+                                        <div class="spec-column">
+
+                                            <div class="spec-item">
+
+                                                <strong>
+                                                    Touch:
+                                                </strong>
+
+                                                <span>
+                                                    Multi Touch
+                                                </span>
+
+                                            </div>
+
+                                            <div class="spec-item">
+
+                                                <strong>
+                                                    Response:
+                                                </strong>
+
+                                                <span>
+                                                    Fast
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+                                    <!-- FEATURES -->
+
+                                    <td>
+
+                                        <div class="spec-column">
+
+                                            {{if .Chipset}}
+
+                                            <div class="spec-item">
+
+                                                <strong>
+                                                    Chipset:
+                                                </strong>
+
+                                                <span>
+                                                    {{.Chipset}}
+                                                </span>
+
+                                            </div>
+
+                                            {{end}}
+
+                                            {{if .Storage}}
+
+                                            <div class="spec-item">
+
+                                                <strong>
+                                                    Storage:
+                                                </strong>
+
+                                                <span>
+                                                    {{.Storage}}
+                                                </span>
+
+                                            </div>
+
+                                            {{end}}
+
+                                            {{if .GoogleIntegration}}
+
+                                            <div class="feature-badge">
+                                                Google Enabled
+                                            </div>
+
+                                            {{end}}
+
+                                        </div>
+
+                                    </td>
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        {{if .IsActive}}
+
+                                            <span class="status-badge active">
+                                                Active
+                                            </span>
+
                                         {{else}}
 
-                                            <span class="table-text">
-                                                No Images
+                                            <span class="status-badge inactive">
+                                                Inactive
                                             </span>
 
                                         {{end}}
 
-                                    </td> -->
-                                <!-- THUMBNAIL -->
+                                    </td>
 
-                                <!-- <td>
+                                    <!-- ACTIONS -->
 
-                                    {{if .Thumbnail}}
+                                    <td>
 
-                                    <div class="table-gallery-item">
+                                        <div class="table-actions">
 
-                                        <img src="{{.Thumbnail}}" alt="{{.Name}}" class="table-gallery-image">
+                                            <a
+                                                href="/products/edit/{{.ID}}"
+                                                class="btn-action edit"
+                                            >
+                                                Edit
+                                            </a>
 
-                                    </div>
+                                            <form
+                                                method="POST"
+                                                action="/products/delete/{{.ID}}"
+                                                onsubmit="return confirm('Delete this product?')"
+                                            >
 
-                                    {{else}}
+                                                <button
+                                                    type="submit"
+                                                    class="btn-action delete"
+                                                >
+                                                    Delete
+                                                </button>
 
-                                    <span class="table-text">
-                                        No Image
-                                    </span>
+                                            </form>
 
-                                    {{end}}
+                                        </div>
 
-                                </td> -->
+                                    </td>
 
-                                <!-- CHIPSET -->
+                                </tr>
 
-                                <td>
-
-                                    <span class="table-text">
-                                        {{.Chipset}}
-                                    </span>
-
-                                </td>
-
-                                <!-- STORAGE -->
-
-                                <td>
-
-                                    <span class="table-text">
-                                        {{.Storage}}
-                                    </span>
-
-                                </td>
-
-                                <!-- RESOLUTION -->
-
-                                <td>
-
-                                    <span class="table-text">
-                                        {{.Resolution}}
-                                    </span>
-
-                                </td>
-
-                                <!-- STATUS -->
-
-                                <td>
-
-                                    {{if .IsActive}}
-
-                                    <span class="status-badge active">
-                                        Active
-                                    </span>
-
-                                    {{else}}
-
-                                    <span class="status-badge inactive">
-                                        Inactive
-                                    </span>
-
-                                    {{end}}
-
-                                </td>
-
-                                <!-- ACTIONS -->
-
-                                <td>
-
-                                    <div class="table-actions">
-
-                                        <a href="/products/edit/{{.ID}}" class="btn-action edit">
-                                            Edit
-                                        </a>
-
-                                        <form method="POST" action="/products/delete/{{.ID}}"
-                                            onsubmit="return confirm('Delete this product?')">
-
-                                            <button type="submit" class="btn-action delete">
-                                                Delete
-                                            </button>
-
-                                        </form>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                            {{end}}
+                                {{end}}
 
                             {{else}}
 
-                            <tr>
+                                <tr>
 
-                                <td colspan="8">
+                                    <td colspan="7">
 
-                                    <div class="empty-products">
+                                        <div class="empty-products">
 
-                                        <h3>
-                                            No products found
-                                        </h3>
+                                            <h3>
+                                                No products found
+                                            </h3>
 
-                                        <p>
-                                            Start by creating your first product.
-                                        </p>
+                                            <p>
+                                                Start by creating your first product.
+                                            </p>
 
-                                        <a href="/products/create" class="btn btn-primary">
-                                            Create Product
-                                        </a>
+                                            <a
+                                                href="/products/create"
+                                                class="btn btn-primary"
+                                            >
+                                                Create Product
+                                            </a>
 
-                                    </div>
+                                        </div>
 
-                                </td>
+                                    </td>
 
-                            </tr>
+                                </tr>
 
                             {{end}}
 

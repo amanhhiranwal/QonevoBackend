@@ -740,3 +740,19 @@ body {
   color: #888;
   font-size: 14px;
 }
+
+
+.dashboard-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.dashboard-card-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.dashboard-stat-card {
+    cursor: pointer;
+}

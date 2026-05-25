@@ -134,7 +134,7 @@ func (c *ProductController) Store(
 	// =====================================
 
 	err := r.ParseMultipartForm(
-		20 << 20, // 20MB
+		20 << 20,
 	)
 
 	if err != nil {
@@ -165,22 +165,6 @@ func (c *ProductController) Store(
 		r.FormValue("subheading"),
 	)
 
-	size := strings.TrimSpace(
-		r.FormValue("size"),
-	)
-
-	chipset := strings.TrimSpace(
-		r.FormValue("chipset"),
-	)
-
-	storage := strings.TrimSpace(
-		r.FormValue("storage"),
-	)
-
-	resolution := strings.TrimSpace(
-		r.FormValue("resolution"),
-	)
-
 	googleIntegration :=
 		r.FormValue("google_integration") == "on"
 
@@ -206,10 +190,6 @@ func (c *ProductController) Store(
 	product := &models.Product{
 		Name:              name,
 		Subheading:        subheading,
-		Size:              size,
-		Chipset:           chipset,
-		Storage:           storage,
-		Resolution:        resolution,
 		GoogleIntegration: googleIntegration,
 		IsActive:          true,
 	}
@@ -242,6 +222,57 @@ func (c *ProductController) Store(
 		"product created successfully: %d",
 		productID,
 	)
+
+	// =====================================
+	// Save Specifications
+	// =====================================
+
+	specCategories := r.Form["spec_category[]"]
+	specKeys := r.Form["spec_key[]"]
+	specValues := r.Form["spec_value[]"]
+
+	for i := range specKeys {
+
+		if i >= len(specCategories) ||
+			i >= len(specValues) {
+			continue
+		}
+
+		key := strings.TrimSpace(
+			specKeys[i],
+		)
+
+		value := strings.TrimSpace(
+			specValues[i],
+		)
+
+		category := strings.TrimSpace(
+			specCategories[i],
+		)
+
+		if key == "" || value == "" {
+			continue
+		}
+
+		specification := &models.ProductSpecification{
+			ProductID: productID,
+			Category:  category,
+			SpecKey:   key,
+			SpecValue: value,
+		}
+
+		err := c.service.CreateProductSpecification(
+			specification,
+		)
+
+		if err != nil {
+
+			log.Printf(
+				"failed to save specification: %v",
+				err,
+			)
+		}
+	}
 
 	// =====================================
 	// Handle Multiple Image Uploads
@@ -308,12 +339,6 @@ func (c *ProductController) Store(
 			// Save Image In Database
 			// =================================
 
-			// image := &models.ProductImage{
-			// 	ProductID: productID,
-			// 	ImageURL:  imageURL,
-			// 	SortOrder: index + 1,
-			// }
-
 			image := &models.ProductImage{
 				ProductID: productID,
 				ImageURL:  imageURL,
@@ -368,10 +393,6 @@ func (c *ProductController) EditPage(
 		return
 	}
 
-	// =====================================
-	// Extract Product ID
-	// =====================================
-
 	idStr := strings.TrimPrefix(
 		r.URL.Path,
 		"/products/edit/",
@@ -393,10 +414,6 @@ func (c *ProductController) EditPage(
 
 		return
 	}
-
-	// =====================================
-	// Fetch Product
-	// =====================================
 
 	product, err := c.service.GetProductByID(
 		productID,
@@ -449,10 +466,6 @@ func (c *ProductController) DeleteImage(
 		return
 	}
 
-	// =====================================
-	// Extract Image ID
-	// =====================================
-
 	idStr := strings.TrimPrefix(
 		r.URL.Path,
 		"/products/image/delete/",
@@ -475,10 +488,6 @@ func (c *ProductController) DeleteImage(
 		return
 	}
 
-	// =====================================
-	// Delete Image
-	// =====================================
-
 	err = c.service.DeleteProductImage(
 		imageID,
 	)
@@ -498,10 +507,6 @@ func (c *ProductController) DeleteImage(
 
 		return
 	}
-
-	// =====================================
-	// Redirect Back
-	// =====================================
 
 	http.Redirect(
 		w,
@@ -569,15 +574,19 @@ func (c *ProductController) Update(
 	}
 
 	product := &models.Product{
-		ID:                productID,
-		Name:              strings.TrimSpace(r.FormValue("name")),
-		Subheading:        strings.TrimSpace(r.FormValue("subheading")),
-		Size:              strings.TrimSpace(r.FormValue("size")),
-		Chipset:           strings.TrimSpace(r.FormValue("chipset")),
-		Storage:           strings.TrimSpace(r.FormValue("storage")),
-		Resolution:        strings.TrimSpace(r.FormValue("resolution")),
+		ID: productID,
+
+		Name: strings.TrimSpace(
+			r.FormValue("name"),
+		),
+
+		Subheading: strings.TrimSpace(
+			r.FormValue("subheading"),
+		),
+
 		GoogleIntegration: r.FormValue("google_integration") == "on",
-		IsActive:          true,
+
+		IsActive: true,
 	}
 
 	err = c.service.UpdateProduct(
@@ -687,17 +696,9 @@ func (c *ProductController) GetProductsAPI(
 	r *http.Request,
 ) {
 
-	// =====================================
-	// Query Params
-	// =====================================
-
 	limitParam := r.URL.Query().Get(
 		"limit",
 	)
-
-	// =====================================
-	// Fetch Products
-	// =====================================
 
 	products, err := c.service.GetProducts()
 
@@ -717,10 +718,6 @@ func (c *ProductController) GetProductsAPI(
 		return
 	}
 
-	// =====================================
-	// Apply Limit
-	// =====================================
-
 	if limitParam != "" {
 
 		limit, err := strconv.Atoi(
@@ -734,10 +731,6 @@ func (c *ProductController) GetProductsAPI(
 			products = products[:limit]
 		}
 	}
-
-	// =====================================
-	// Response
-	// =====================================
 
 	w.Header().Set(
 		"Content-Type",

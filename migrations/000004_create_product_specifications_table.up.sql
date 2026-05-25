@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS product_specifications (
 
     product_id BIGINT NOT NULL,
 
+    category VARCHAR(255) NOT NULL,
+
     spec_key VARCHAR(255) NOT NULL,
 
     spec_value TEXT NOT NULL,

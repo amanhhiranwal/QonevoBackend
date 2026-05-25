@@ -143,7 +143,7 @@ func main() {
 	// ============================================
 
 	server := &http.Server{
-		Addr:              ":" + cfg.AppPort,
+		Addr:              "0.0.0.0:" + cfg.AppPort,
 		Handler:           handler,
 		ReadTimeout:       10 * time.Second,
 		ReadHeaderTimeout: 5 * time.Second,
