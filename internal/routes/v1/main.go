@@ -14,6 +14,7 @@ func RegisterV1Routes(
 	auth *controllers.AuthController,
 	page *controllers.PageController,
 	product *controllers.ProductController,
+	contact *controllers.ContactController,
 ) {
 
 	// ============================================
@@ -92,6 +93,10 @@ func RegisterV1Routes(
 	ProductAPIRoutes(
 		mux,
 		product,
+	)
+	mux.HandleFunc(
+		"/api/v1/contact/create-contact",
+		contact.CreateContact,
 	)
 
 	// ============================================

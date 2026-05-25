@@ -57,6 +57,10 @@ func main() {
 		database,
 	)
 
+	contactRepo := repositories.NewContactRepository(
+		database,
+	)
+
 	// ============================================
 	// SERVICES
 	// ============================================
@@ -92,6 +96,10 @@ func main() {
 		s3Service,
 	)
 
+	contactService := services.NewContactService(
+		contactRepo,
+	)
+
 	// ============================================
 	// CONTROLLERS
 	// ============================================
@@ -111,6 +119,10 @@ func main() {
 		s3Service,
 	)
 
+	contactController := controllers.NewContactController(
+		contactService,
+	)
+
 	// ============================================
 	// ROUTER
 	// ============================================
@@ -126,6 +138,7 @@ func main() {
 		authController,
 		pageController,
 		productController,
+		contactController,
 	)
 
 	// ============================================
