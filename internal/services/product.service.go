@@ -138,7 +138,12 @@ func (s *ProductService) GetProducts() (
 	products, err := s.repo.GetProducts()
 
 	if err != nil {
-		return nil, err
+		return []models.Product{}, err
+	}
+
+	// Ensure empty array instead of null
+	if products == nil {
+		products = []models.Product{}
 	}
 
 	for i := range products {
@@ -152,7 +157,12 @@ func (s *ProductService) GetProducts() (
 		)
 
 		if err != nil {
-			return nil, err
+			return []models.Product{}, err
+		}
+
+		// Ensure empty array instead of null
+		if images == nil {
+			images = []models.ProductImage{}
 		}
 
 		products[i].Images = images
@@ -189,8 +199,13 @@ func (s *ProductService) GetProducts() (
 			)
 
 		if err != nil {
-			return nil, err
+			return []models.Product{}, err
 		}
+
+		// Ensure empty array instead of null
+		// if specifications == nil {
+		// 	specifications = []models.ProductSpecification{}
+		// }
 
 		products[i].Specifications =
 			specifications

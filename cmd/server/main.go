@@ -146,8 +146,10 @@ func main() {
 	// ============================================
 
 	handler := middleware.Logger(
-		middleware.SecurityHeaders(
-			mux,
+		middleware.CORS(
+			middleware.SecurityHeaders(
+				mux,
+			),
 		),
 	)
 
