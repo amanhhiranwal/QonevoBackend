@@ -78,15 +78,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout Repository
+        uses: actions/checkout@v5
 
-      - name: Deploy
+      - name: Deploy to Server
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          passphrase: ${{ secrets.EC2_SSH_PASSPHRASE }}
           port: ${{ secrets.EC2_PORT }}
 
           script: |
@@ -94,17 +94,33 @@ jobs:
 
             export PATH=$PATH:/usr/local/go/bin
 
+            echo "Starting deployment..."
+
             cd /var/www/QonevoBackend
 
+            echo "Marking repository as safe..."
+            git config --global --add safe.directory /var/www/QonevoBackend
+
+            echo "Fetching latest code..."
             git fetch origin
             git reset --hard origin/main
 
+            echo "Checking Go version..."
+            go version
+
+            echo "Downloading dependencies..."
             go mod tidy
 
+            echo "Building application..."
             go build -o qonevo-backend cmd/server/main.go
 
+            echo "Restarting service..."
             sudo systemctl restart qonevoBackend
 
+            echo "Waiting for startup..."
             sleep 5
 
+            echo "Checking service status..."
             sudo systemctl is-active qonevoBackend
+
+            echo "Deployment completed successfully!"
