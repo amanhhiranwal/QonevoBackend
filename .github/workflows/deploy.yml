@@ -1,3 +1,67 @@
+# name: Deploy Qonevo Backend
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# concurrency:
+#   group: production-deploy
+#   cancel-in-progress: true
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v5
+
+#       - name: Deploy to EC2
+#         uses: appleboy/ssh-action@v1.2.0
+
+#         with:
+#           host: ${{ secrets.EC2_HOST }}
+#           username: ${{ secrets.EC2_USER }}
+#           key: ${{ secrets.EC2_SSH_KEY }}
+#           port: ${{ secrets.EC2_PORT }}
+
+#           script: |
+#             set -e
+
+#             export PATH=$PATH:/usr/local/go/bin
+
+#             echo "Starting deployment..."
+
+#             cd /var/www/QonevoBackend
+
+#             echo "Pull latest code..."
+#             git fetch origin
+#             git reset --hard origin/main
+
+#             echo "Checking Go installation..."
+#             go version
+
+#             echo "Downloading dependencies..."
+#             make tidy
+
+#             echo "Building application..."
+#             make build
+
+#             echo "Restarting backend service..."
+#             sudo systemctl restart qonevoBackend
+
+#             echo "Waiting for app to boot..."
+#             sleep 5
+
+#             echo "Checking service status..."
+#             sudo systemctl is-active qonevoBackend
+
+#             echo "Health check..."
+#             curl -f https://api.qonevo.co.in/login
+
+#             echo "Deployment completed successfully!"
+
 name: Deploy Qonevo Backend
 
 on:
@@ -14,50 +78,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
 
-      - name: Deploy to EC2
+      - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.2.0
-
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           port: ${{ secrets.EC2_PORT }}
-
           script: |
             set -e
 
             export PATH=$PATH:/usr/local/go/bin
 
-            echo "Starting deployment..."
-
             cd /var/www/QonevoBackend
 
-            echo "Pull latest code..."
             git fetch origin
             git reset --hard origin/main
 
-            echo "Checking Go installation..."
-            go version
+            go mod tidy
 
-            echo "Downloading dependencies..."
-            make tidy
+            go build -o bin/qonevo-backend cmd/server/main.go
 
-            echo "Building application..."
-            make build
+            systemctl restart qonevoBackend
 
-            echo "Restarting backend service..."
-            sudo systemctl restart qonevoBackend
-
-            echo "Waiting for app to boot..."
             sleep 5
 
-            echo "Checking service status..."
-            sudo systemctl is-active qonevoBackend
+            systemctl is-active qonevoBackend
 
-            echo "Health check..."
             curl -f https://api.qonevo.co.in/login
 
-            echo "Deployment completed successfully!"
+            echo "Deployment successful"
