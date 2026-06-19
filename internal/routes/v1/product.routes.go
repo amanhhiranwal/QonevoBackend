@@ -57,6 +57,24 @@ func ProductRoutes(
 		),
 	)
 
+	mux.Handle(
+		"/cameras/create",
+		middleware.RequireAuth(
+			http.HandlerFunc(
+				product.CreateCameraPage,
+			),
+		),
+	)
+
+	mux.Handle(
+		"/cameras",
+		middleware.RequireAuth(
+			http.HandlerFunc(
+				product.CameraIndex,
+			),
+		),
+	)
+
 	// =====================================
 	// Edit Product Page
 	// =====================================
@@ -100,6 +118,14 @@ func ProductRoutes(
 		middleware.RequireAuth(
 			http.HandlerFunc(
 				product.DeleteImage,
+			),
+		),
+	)
+	mux.Handle(
+		"/products/images/upload/",
+		middleware.RequireAuth(
+			http.HandlerFunc(
+				product.UploadImages,
 			),
 		),
 	)

@@ -50,8 +50,11 @@ func (c *ProductController) Index(
 		return
 	}
 
-	products, err := c.service.GetProducts()
+	// products, err := c.service.GetProducts()
 
+	products, err := c.service.GetProductsByType(
+		"IFP",
+	)
 	if err != nil {
 
 		log.Printf(
@@ -168,6 +171,16 @@ func (c *ProductController) Store(
 	googleIntegration :=
 		r.FormValue("google_integration") == "on"
 
+	productType := strings.TrimSpace(
+		r.FormValue("product_type"),
+	)
+
+	var productTypePtr *string
+
+	if productType != "" {
+		productTypePtr = &productType
+	}
+
 	// =====================================
 	// Validation
 	// =====================================
@@ -189,6 +202,7 @@ func (c *ProductController) Store(
 
 	product := &models.Product{
 		Name:              name,
+		ProductType:       productTypePtr,
 		Subheading:        subheading,
 		GoogleIntegration: googleIntegration,
 		IsActive:          true,
@@ -573,12 +587,24 @@ func (c *ProductController) Update(
 		return
 	}
 
+	productType := strings.TrimSpace(
+		r.FormValue("product_type"),
+	)
+
+	var productTypePtr *string
+
+	if productType != "" {
+		productTypePtr = &productType
+	}
+
 	product := &models.Product{
 		ID: productID,
 
 		Name: strings.TrimSpace(
 			r.FormValue("name"),
 		),
+
+		ProductType: productTypePtr,
 
 		Subheading: strings.TrimSpace(
 			r.FormValue("subheading"),
@@ -760,4 +786,347 @@ func (c *ProductController) GetProductsAPI(
 
 		return
 	}
+}
+
+func (c *ProductController) CreateCameraPage(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+
+	if r.Method != http.MethodGet {
+
+		http.Error(
+			w,
+			"method not allowed",
+			http.StatusMethodNotAllowed,
+		)
+
+		return
+	}
+
+	c.page.render(
+		w,
+		"create-camera.html",
+		map[string]any{
+			"Title":      "Create Camera",
+			"IsLoggedIn": true,
+		},
+	)
+}
+
+func (c *ProductController) CameraIndex(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+
+	products, err := c.service.GetProductsByType(
+		"CAMERA",
+	)
+
+	log.Printf("found %d cameras", len(products))
+
+	if err != nil {
+		log.Printf("camera error: %v", err)
+
+		http.Error(
+			w,
+			"failed to load cameras",
+			http.StatusInternalServerError,
+		)
+
+		return
+	}
+
+	c.page.render(
+		w,
+		"cameras.html",
+		map[string]any{
+			"Title":      "Cameras",
+			"IsLoggedIn": true,
+			"Products":   products,
+		},
+	)
+}
+
+// =====================================
+// Upload Additional Product Images
+// =====================================
+
+// func (c *ProductController) UploadImages(
+// 	w http.ResponseWriter,
+// 	r *http.Request,
+// ) {
+
+// 	if r.Method != http.MethodPost {
+
+// 		http.Error(
+// 			w,
+// 			"method not allowed",
+// 			http.StatusMethodNotAllowed,
+// 		)
+
+// 		return
+// 	}
+
+// 	idStr := strings.TrimPrefix(
+// 		r.URL.Path,
+// 		"/products/images/upload/",
+// 	)
+
+// 	productID, err := strconv.ParseInt(
+// 		idStr,
+// 		10,
+// 		64,
+// 	)
+
+// 	if err != nil {
+
+// 		http.Error(
+// 			w,
+// 			"invalid product id",
+// 			http.StatusBadRequest,
+// 		)
+
+// 		return
+// 	}
+
+// 	err = r.ParseMultipartForm(
+// 		20 << 20,
+// 	)
+
+// 	if err != nil {
+
+// 		http.Error(
+// 			w,
+// 			"failed to parse form",
+// 			http.StatusBadRequest,
+// 		)
+
+// 		return
+// 	}
+
+// 	files := r.MultipartForm.File["images"]
+
+// 	for _, fileHeader := range files {
+
+// 		file, err := fileHeader.Open()
+
+// 		if err != nil {
+// 			continue
+// 		}
+
+// 		imageURL, err := c.s3Service.UploadFile(
+// 			file,
+// 			fileHeader,
+// 			"products",
+// 		)
+
+// 		file.Close()
+
+// 		if err != nil {
+// 			log.Printf(
+// 				"upload failed: %v",
+// 				err,
+// 			)
+
+// 			continue
+// 		}
+
+// 		image := &models.ProductImage{
+// 			ProductID: productID,
+// 			ImageURL:  imageURL,
+// 			IsPrimary: false,
+// 		}
+
+// 		err = c.service.CreateProductImage(
+// 			image,
+// 		)
+
+// 		if err != nil {
+
+// 			log.Printf(
+// 				"failed to save image: %v",
+// 				err,
+// 			)
+// 		}
+// 	}
+
+// 	http.Redirect(
+// 		w,
+// 		r,
+// 		"/products/edit/"+idStr,
+// 		http.StatusSeeOther,
+// 	)
+// }
+
+// =====================================
+// Upload Additional Product Images
+// =====================================
+
+func (c *ProductController) UploadImages(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+
+	if r.Method != http.MethodPost {
+
+		http.Error(
+			w,
+			"method not allowed",
+			http.StatusMethodNotAllowed,
+		)
+
+		return
+	}
+
+	idStr := strings.TrimPrefix(
+		r.URL.Path,
+		"/products/images/upload/",
+	)
+
+	productID, err := strconv.ParseInt(
+		idStr,
+		10,
+		64,
+	)
+
+	if err != nil {
+
+		http.Error(
+			w,
+			"invalid product id",
+			http.StatusBadRequest,
+		)
+
+		return
+	}
+
+	err = r.ParseMultipartForm(
+		20 << 20,
+	)
+
+	if err != nil {
+
+		http.Error(
+			w,
+			"failed to parse form",
+			http.StatusBadRequest,
+		)
+
+		return
+	}
+
+	files := r.MultipartForm.File["images"]
+
+	if len(files) == 0 {
+
+		http.Redirect(
+			w,
+			r,
+			"/products/edit/"+idStr,
+			http.StatusSeeOther,
+		)
+
+		return
+	}
+
+	// =====================================
+	// Check if product already has a primary image
+	// =====================================
+
+	product, err := c.service.GetProductByID(
+		productID,
+	)
+
+	if err != nil {
+
+		log.Printf(
+			"failed to fetch product: %v",
+			err,
+		)
+
+		http.Error(
+			w,
+			"failed to load product",
+			http.StatusInternalServerError,
+		)
+
+		return
+	}
+
+	hasPrimary := false
+
+	for _, img := range product.Images {
+
+		if img.IsPrimary {
+
+			hasPrimary = true
+			break
+		}
+	}
+
+	// =====================================
+	// Upload images
+	// =====================================
+
+	for index, fileHeader := range files {
+
+		file, err := fileHeader.Open()
+
+		if err != nil {
+
+			log.Printf(
+				"failed to open file: %v",
+				err,
+			)
+
+			continue
+		}
+
+		imageURL, err := c.s3Service.UploadFile(
+			file,
+			fileHeader,
+			"products",
+		)
+
+		file.Close()
+
+		if err != nil {
+
+			log.Printf(
+				"upload failed: %v",
+				err,
+			)
+
+			continue
+		}
+
+		image := &models.ProductImage{
+			ProductID: productID,
+			ImageURL:  imageURL,
+
+			// first uploaded image becomes primary
+			// only if no primary image exists already
+			IsPrimary: !hasPrimary && index == 0,
+		}
+
+		err = c.service.CreateProductImage(
+			image,
+		)
+
+		if err != nil {
+
+			log.Printf(
+				"failed to save image: %v",
+				err,
+			)
+		}
+	}
+
+	http.Redirect(
+		w,
+		r,
+		"/products/edit/"+idStr,
+		http.StatusSeeOther,
+	)
 }

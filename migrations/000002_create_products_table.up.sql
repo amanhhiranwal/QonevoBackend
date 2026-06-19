@@ -16,3 +16,9 @@ CREATE TABLE IF NOT EXISTS products (
 
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE products
+DROP COLUMN product_type_id;
+
+ALTER TABLE products
+ADD COLUMN product_type VARCHAR(50);

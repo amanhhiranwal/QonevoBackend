@@ -15,16 +15,12 @@
             <div class="form-card">
 
                 <div class="form-header">
-                    <h1>Edit Product</h1>
+                    <h1>Edit IFP Products</h1>
                     <p>Update product information and manage images</p>
                 </div>
 
-                <form
-                    method="POST"
-                    action="/products/update/{{.Product.ID}}"
-                    enctype="multipart/form-data"
-                    class="product-form"
-                >
+                <form method="POST" action="/products/update/{{.Product.ID}}" enctype="multipart/form-data"
+                    class="product-form">
 
                     <div class="form-grid">
 
@@ -34,13 +30,7 @@
 
                             <label>Product Name</label>
 
-                            <input
-                                type="text"
-                                name="name"
-                                required
-                                value="{{.Product.Name}}"
-                                class="product-input"
-                            >
+                            <input type="text" name="name" required value="{{.Product.Name}}" class="product-input">
 
                         </div>
 
@@ -48,11 +38,8 @@
 
                             <label class="checkbox-label">
 
-                                <input
-                                    type="checkbox"
-                                    name="google_integration"
-                                    {{if .Product.GoogleIntegration}}checked{{end}}
-                                >
+                                <input type="checkbox" name="google_integration" {{if
+                                    .Product.GoogleIntegration}}checked{{end}}>
 
                                 Google Integration
 
@@ -64,11 +51,8 @@
 
                             <label>Subheading</label>
 
-                            <textarea
-                                name="subheading"
-                                rows="3"
-                                class="product-input"
-                            >{{.Product.Subheading}}</textarea>
+                            <textarea name="subheading" rows="3"
+                                class="product-input">{{.Product.Subheading}}</textarea>
 
                         </div>
 
@@ -89,13 +73,8 @@
                             <input type="hidden" name="spec_category[]" value="Display">
                             <input type="hidden" name="spec_key[]" value="Size">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Display" "Size"}}'
-                                class="product-input"
-                                placeholder='65"'
-                            >
+                            <input type="text" name="spec_value[]" value='{{.Product.GetSpecValue "Display" "Size"}}'
+                                class="product-input" placeholder='65"'>
 
                         </div>
 
@@ -108,13 +87,9 @@
                             <input type="hidden" name="spec_category[]" value="Display">
                             <input type="hidden" name="spec_key[]" value="Technology">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Display" "Technology"}}'
-                                class="product-input"
-                                placeholder="OLED"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Display" "Technology"}}' class="product-input"
+                                placeholder="OLED">
 
                         </div>
 
@@ -163,13 +138,9 @@
                             <input type="hidden" name="spec_category[]" value="Display">
                             <input type="hidden" name="spec_key[]" value="Resolution Ratio">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Display" "Resolution Ratio"}}'
-                                class="product-input"
-                                placeholder="3840x2160"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Display" "Resolution Ratio"}}' class="product-input"
+                                placeholder="3840x2160">
 
                         </div>
 
@@ -182,13 +153,9 @@
                             <input type="hidden" name="spec_category[]" value="Display">
                             <input type="hidden" name="spec_key[]" value="Refresh Rate">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Display" "Refresh Rate"}}'
-                                class="product-input"
-                                placeholder="60Hz"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Display" "Refresh Rate"}}' class="product-input"
+                                placeholder="60Hz">
 
                         </div>
 
@@ -201,13 +168,9 @@
                             <input type="hidden" name="spec_category[]" value="Display">
                             <input type="hidden" name="spec_key[]" value="Luminance">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Display" "Luminance"}}'
-                                class="product-input"
-                                placeholder="500 nits"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Display" "Luminance"}}' class="product-input"
+                                placeholder="500 nits">
 
                         </div>
 
@@ -220,13 +183,9 @@
                             <input type="hidden" name="spec_category[]" value="Display">
                             <input type="hidden" name="spec_key[]" value="Viewing Angle">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Display" "Viewing Angle"}}'
-                                class="product-input"
-                                placeholder="178°"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Display" "Viewing Angle"}}' class="product-input"
+                                placeholder="178°">
 
                         </div>
 
@@ -247,13 +206,9 @@
                             <input type="hidden" name="spec_category[]" value="Touch">
                             <input type="hidden" name="spec_key[]" value="Touch Type">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Touch" "Touch Type"}}'
-                                class="product-input"
-                                placeholder="Infrared"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Touch" "Touch Type"}}' class="product-input"
+                                placeholder="Infrared">
 
                         </div>
 
@@ -266,13 +221,9 @@
                             <input type="hidden" name="spec_category[]" value="Touch">
                             <input type="hidden" name="spec_key[]" value="Touch Count">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Touch" "Touch Count"}}'
-                                class="product-input"
-                                placeholder="20 Points"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Touch" "Touch Count"}}' class="product-input"
+                                placeholder="20 Points">
 
                         </div>
 
@@ -285,13 +236,9 @@
                             <input type="hidden" name="spec_category[]" value="Touch">
                             <input type="hidden" name="spec_key[]" value="Touch Accuracy">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Touch" "Touch Accuracy"}}'
-                                class="product-input"
-                                placeholder="±1mm"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Touch" "Touch Accuracy"}}' class="product-input"
+                                placeholder="±1mm">
 
                         </div>
 
@@ -304,13 +251,9 @@
                             <input type="hidden" name="spec_category[]" value="Touch">
                             <input type="hidden" name="spec_key[]" value="Response Time">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Touch" "Response Time"}}'
-                                class="product-input"
-                                placeholder="8ms"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Touch" "Response Time"}}' class="product-input"
+                                placeholder="8ms">
 
                         </div>
 
@@ -331,13 +274,9 @@
                             <input type="hidden" name="spec_category[]" value="Input/Output">
                             <input type="hidden" name="spec_key[]" value="Speakers">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Input/Output" "Speakers"}}'
-                                class="product-input"
-                                placeholder="2 x 15W"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Input/Output" "Speakers"}}' class="product-input"
+                                placeholder="2 x 15W">
 
                         </div>
 
@@ -350,13 +289,9 @@
                             <input type="hidden" name="spec_category[]" value="Input/Output">
                             <input type="hidden" name="spec_key[]" value="Microphone">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Input/Output" "Microphone"}}'
-                                class="product-input"
-                                placeholder="8 Array Mic"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Input/Output" "Microphone"}}' class="product-input"
+                                placeholder="8 Array Mic">
 
                         </div>
 
@@ -369,13 +304,9 @@
                             <input type="hidden" name="spec_category[]" value="Input/Output">
                             <input type="hidden" name="spec_key[]" value="Camera">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Input/Output" "Camera"}}'
-                                class="product-input"
-                                placeholder="48MP AI Camera"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Input/Output" "Camera"}}' class="product-input"
+                                placeholder="48MP AI Camera">
 
                         </div>
 
@@ -388,12 +319,8 @@
                             <input type="hidden" name="spec_category[]" value="Input/Output">
                             <input type="hidden" name="spec_key[]" value="Interface">
 
-                            <textarea
-                                name="spec_value[]"
-                                rows="3"
-                                class="product-input"
-                                placeholder="HDMI, USB, Type-C"
-                            >{{.Product.GetSpecValue "Input/Output" "Interface"}}</textarea>
+                            <textarea name="spec_value[]" rows="3" class="product-input"
+                                placeholder="HDMI, USB, Type-C">{{.Product.GetSpecValue "Input/Output" "Interface"}}</textarea>
 
                         </div>
 
@@ -414,13 +341,9 @@
                             <input type="hidden" name="spec_category[]" value="Package">
                             <input type="hidden" name="spec_key[]" value="Net Weight">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Package" "Net Weight"}}'
-                                class="product-input"
-                                placeholder="32kg"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Package" "Net Weight"}}' class="product-input"
+                                placeholder="32kg">
 
                         </div>
 
@@ -433,13 +356,9 @@
                             <input type="hidden" name="spec_category[]" value="Package">
                             <input type="hidden" name="spec_key[]" value="Gross Weight">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Package" "Gross Weight"}}'
-                                class="product-input"
-                                placeholder="38kg"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Package" "Gross Weight"}}' class="product-input"
+                                placeholder="38kg">
 
                         </div>
 
@@ -452,13 +371,9 @@
                             <input type="hidden" name="spec_category[]" value="Package">
                             <input type="hidden" name="spec_key[]" value="Bare Machine Size">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Package" "Bare Machine Size"}}'
-                                class="product-input"
-                                placeholder="1480x900x80 mm"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Package" "Bare Machine Size"}}' class="product-input"
+                                placeholder="1480x900x80 mm">
 
                         </div>
 
@@ -471,13 +386,9 @@
                             <input type="hidden" name="spec_category[]" value="Package">
                             <input type="hidden" name="spec_key[]" value="Package Size">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                value='{{.Product.GetSpecValue "Package" "Package Size"}}'
-                                class="product-input"
-                                placeholder="1600x1020x200 mm"
-                            >
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Package" "Package Size"}}' class="product-input"
+                                placeholder="1600x1020x200 mm">
 
                         </div>
 
@@ -489,12 +400,7 @@
 
                             <div class="upload-box">
 
-                                <input
-                                    type="file"
-                                    name="images"
-                                    multiple
-                                    class="product-input"
-                                >
+                                <input type="file" name="images" multiple class="product-input">
 
                                 <p class="upload-helper">
                                     You can upload multiple product images at once.
@@ -512,10 +418,7 @@
                             Cancel
                         </a>
 
-                        <button
-                            type="submit"
-                            class="btn-primary"
-                        >
+                        <button type="submit" class="btn-primary">
                             Update Product
                         </button>
 
@@ -525,97 +428,118 @@
 
                 <!-- IMAGES -->
 
+                <!-- ===================================== -->
+                <!-- PRODUCT IMAGES -->
+                <!-- ===================================== -->
+
                 <div class="product-images-section">
 
                     <div class="images-header">
 
                         <div>
 
-                            <label>
+                            <h3>
                                 Product Images
-                            </label>
+                            </h3>
 
                             <p class="images-subtitle">
-                                Manage uploaded product gallery
+                                Upload new images and manage existing gallery.
                             </p>
 
                         </div>
 
                     </div>
 
-                    {{if .Product.Images}}
 
-                        <div class="edit-product-gallery">
+                    <!-- Upload New Images -->
 
-                            {{range .Product.Images}}
+                    <form method="POST" action="/products/images/upload/{{.Product.ID}}" enctype="multipart/form-data"
+                        class="upload-image-form">
 
-                                <div class="edit-gallery-card">
+                        <div class="form-group">
 
-                                    <div class="edit-gallery-image-wrapper">
+                            <label>
+                                Upload More Images
+                            </label>
 
-                                        <img
-                                            src="{{.ImageURL}}"
-                                            alt="Product Image"
-                                            class="edit-gallery-image"
-                                        >
+                            <input type="file" name="images" multiple accept="image/*" class="product-input">
 
-                                        {{if .IsPrimary}}
-
-                                            <span class="primary-image-badge">
-                                                Primary
-                                            </span>
-
-                                        {{end}}
-
-                                    </div>
-
-                                    <div class="edit-gallery-actions">
-
-                                        <form
-                                            method="POST"
-                                            action="/products/image/delete/{{.ID}}"
-                                            class="image-action-form"
-                                            onsubmit="return confirm('Delete this image?')"
-                                        >
-
-                                            <button
-                                                type="submit"
-                                                class="btn-image-action danger"
-                                            >
-                                                Delete
-                                            </button>
-
-                                        </form>
-
-                                    </div>
-
-                                </div>
-
-                            {{end}}
+                            <small class="form-help">
+                                Select one or more images to add to this product.
+                            </small>
 
                         </div>
+
+                        <button type="submit" class="btn-primary">
+                            Upload Images
+                        </button>
+
+                    </form>
+
+
+                    <!-- Existing Gallery -->
+
+                    {{if .Product.Images}}
+
+                    <div class="edit-product-gallery">
+
+                        {{range .Product.Images}}
+
+                        <div class="edit-gallery-card">
+
+                            <div class="edit-gallery-image-wrapper">
+
+                                <img src="{{.ImageURL}}" alt="Product Image" class="edit-gallery-image">
+
+                                {{if .IsPrimary}}
+
+                                <span class="primary-image-badge">
+                                    Primary
+                                </span>
+
+                                {{end}}
+
+                            </div>
+
+                            <div class="edit-gallery-actions">
+
+                                <form method="POST" action="/products/image/delete/{{.ID}}" class="image-action-form"
+                                    onsubmit="return confirm('Delete this image?')">
+
+                                    <button type="submit" class="btn-image-action danger">
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                        {{end}}
+
+                    </div>
 
                     {{else}}
 
-                        <div class="empty-image-state">
+                    <div class="empty-image-state">
 
-                            <div class="empty-image-icon">
-                                🖼️
-                            </div>
-
-                            <h4>
-                                No Images Uploaded
-                            </h4>
-
-                            <p>
-                                Upload product images to build your gallery.
-                            </p>
-
+                        <div class="empty-image-icon">
+                            🖼️
                         </div>
+
+                        <h4>No Images Uploaded</h4>
+
+                        <p>
+                            Upload product images to build your gallery.
+                        </p>
+
+                    </div>
 
                     {{end}}
 
                 </div>
+
 
             </div>
 

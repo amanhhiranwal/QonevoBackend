@@ -1,0 +1,263 @@
+{{define "cameras.html"}}
+
+{{template "header" .}}
+
+<div class="dashboard-layout">
+
+    {{template "sidebar" .}}
+
+    <main class="dashboard-main">
+
+        {{template "navbar" .}}
+
+        <section class="dashboard-content products-page">
+
+            <div class="products-header">
+
+                <div>
+
+                    <h1>
+                        Cameras
+                    </h1>
+
+                    <p>
+                        Manage and organize your camera products
+                    </p>
+
+                </div>
+
+                <a
+                    href="/cameras/create"
+                    class="btn btn-primary btn-lg"
+                >
+                    + Add Camera
+                </a>
+
+            </div>
+
+            <div class="products-card">
+
+                <div class="table-responsive">
+
+                    <table class="products-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+                                <th>Camera</th>
+                                <th>Resolution</th>
+                                <th>Lens</th>
+                                <th>Features</th>
+                                <th>Status</th>
+                                <th class="text-end">Actions</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {{if .Products}}
+
+                                {{range .Products}}
+
+                                <tr>
+
+                                    <td class="product-id">
+                                        #{{.ID}}
+                                    </td>
+
+                                    <td>
+
+                                        <div class="product-info">
+
+                                            <div class="product-image-wrapper">
+
+                                                {{if .Thumbnail}}
+
+                                                <img
+                                                    src="{{.Thumbnail}}"
+                                                    alt="{{.Name}}"
+                                                    class="product-image"
+                                                >
+
+                                                {{else}}
+
+                                                <div class="product-placeholder">
+                                                    No Image
+                                                </div>
+
+                                                {{end}}
+
+                                            </div>
+
+                                            <div class="product-meta">
+
+                                                <h6>
+                                                    {{.Name}}
+                                                </h6>
+
+                                                <p>
+                                                    {{.Subheading}}
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+                                    <!-- Resolution -->
+
+                                    <td>
+
+                                        <div class="spec-column">
+
+                                            {{if .Resolution}}
+
+                                            <div class="spec-item">
+
+                                                <strong>
+                                                    Resolution:
+                                                </strong>
+
+                                                <span>
+                                                    {{.Resolution}}
+                                                </span>
+
+                                            </div>
+
+                                            {{end}}
+
+                                        </div>
+
+                                    </td>
+
+                                    <!-- Lens -->
+
+                                    
+
+                                    <!-- Features -->
+
+                                    <td>
+
+                                        <div class="spec-column">
+
+                                            {{if .GoogleIntegration}}
+
+                                            <div class="feature-badge">
+                                                Google Enabled
+                                            </div>
+
+                                            {{end}}
+
+                                        </div>
+
+                                    </td>
+
+                                    <!-- Status -->
+
+                                    <td>
+
+                                        {{if .IsActive}}
+
+                                        <span class="status-badge active">
+                                            Active
+                                        </span>
+
+                                        {{else}}
+
+                                        <span class="status-badge inactive">
+                                            Inactive
+                                        </span>
+
+                                        {{end}}
+
+                                    </td>
+
+                                    <!-- Actions -->
+
+                                    <td>
+
+                                        <div class="table-actions">
+
+                                            <a
+                                                href="/products/edit/{{.ID}}"
+                                                class="btn-action edit"
+                                            >
+                                                Edit
+                                            </a>
+
+                                            <form
+                                                method="POST"
+                                                action="/products/delete/{{.ID}}"
+                                                onsubmit="return confirm('Delete this camera?')"
+                                            >
+
+                                                <button
+                                                    type="submit"
+                                                    class="btn-action delete"
+                                                >
+                                                    Delete
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                                {{end}}
+
+                            {{else}}
+
+                                <tr>
+
+                                    <td colspan="7">
+
+                                        <div class="empty-products">
+
+                                            <h3>
+                                                No cameras found
+                                            </h3>
+
+                                            <p>
+                                                Start by creating your first camera.
+                                            </p>
+
+                                            <a
+                                                href="/cameras/create"
+                                                class="btn btn-primary"
+                                            >
+                                                Create Camera
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            {{end}}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+{{template "footer" .}}
+
+{{end}}

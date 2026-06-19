@@ -1,0 +1,291 @@
+{{define "create-camera.html"}}
+
+{{template "header" .}}
+
+<div class="dashboard-layout">
+
+    {{template "sidebar" .}}
+
+    <main class="dashboard-main">
+
+        {{template "navbar" .}}
+
+        <section class="dashboard-content">
+
+            <div class="form-card">
+
+                <div class="form-header">
+                    <h1>Create Camera</h1>
+                    <p>Add a new camera to inventory</p>
+                </div>
+
+                <form
+                    method="POST"
+                    action="/products"
+                    enctype="multipart/form-data"
+                    class="product-form"
+                >
+
+                    <input
+                        type="hidden"
+                        name="product_type"
+                        value="CAMERA"
+                    >
+
+                    <div class="form-grid">
+
+                        <!-- BASIC INFO -->
+
+                        <div class="form-group">
+                            <label>Camera Name</label>
+
+                            <input
+                                type="text"
+                                name="name"
+                                required
+                                class="product-input"
+                            >
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    name="google_integration"
+                                >
+                                Google Integration
+                            </label>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Subheading</label>
+
+                            <textarea
+                                name="subheading"
+                                rows="3"
+                                class="product-input"
+                            ></textarea>
+                        </div>
+
+                        <!-- CAMERA SPECIFICATIONS -->
+
+                        <div class="full-width">
+                            <h3 class="spec-title">
+                                Camera Specifications
+                            </h3>
+                        </div>
+
+                        <!-- MODEL -->
+
+                        <div class="form-group">
+                            <label>Model</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="Model">
+
+                            <input
+                                type="text"
+                                name="spec_value[]"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <!-- MEGAPIXEL -->
+
+                        <div class="form-group">
+                            <label>Megapixel</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="Megapixel">
+
+                            <input
+                                type="text"
+                                name="spec_value[]"
+                                class="product-input"
+                                placeholder="48MP"
+                            >
+                        </div>
+
+                        <!-- PTZ -->
+
+                        <div class="form-group">
+                            <label>PTZ & Auto Focus</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="PTZ & Auto Focus">
+
+                            <input
+                                type="text"
+                                name="spec_value[]"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <!-- MIC -->
+
+                        <div class="form-group">
+                            <label>Microphone</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="Microphone">
+
+                            <input
+                                type="text"
+                                name="spec_value[]"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <!-- HDMI -->
+
+                        <div class="form-group">
+                            <label>HDMI</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="HDMI">
+
+                            <input
+                                type="text"
+                                name="spec_value[]"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <!-- USB -->
+
+                        <div class="form-group">
+                            <label>USB</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="USB">
+
+                            <input
+                                type="text"
+                                name="spec_value[]"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <!-- DIGITAL ZOOM -->
+
+                        <div class="form-group">
+                            <label>Digital Zoom</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="Digital Zoom">
+
+                            <input
+                                type="text"
+                                name="spec_value[]"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <!-- WEIGHT -->
+
+                        <div class="form-group">
+                            <label>Weight</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="Weight">
+
+                            <input
+                                type="text"
+                                name="spec_value[]"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <!-- DIMENSIONS -->
+
+                        <div class="form-group">
+                            <label>Dimensions</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="Dimensions">
+
+                            <input
+                                type="text"
+                                name="spec_value[]"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <!-- POWER -->
+
+                        <div class="form-group">
+                            <label>Power Consumption</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="Power Consumption">
+
+                            <input
+                                type="text"
+                                name="spec_value[]"
+                                class="product-input"
+                            >
+                        </div>
+
+                        <!-- OS -->
+
+                        <div class="form-group full-width">
+                            <label>Operating Systems</label>
+
+                            <input type="hidden" name="spec_category[]" value="Camera">
+                            <input type="hidden" name="spec_key[]" value="Operating Systems">
+
+                            <textarea
+                                name="spec_value[]"
+                                rows="3"
+                                class="product-input"
+                            ></textarea>
+                        </div>
+
+                        <!-- IMAGES -->
+
+                        <div class="form-group full-width">
+
+                            <label>Camera Images</label>
+
+                            <input
+                                type="file"
+                                name="images"
+                                multiple
+                                class="product-input"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+
+                        <a
+                            href="/cameras"
+                            class="btn-secondary"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn-primary"
+                        >
+                            Save Camera
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+{{template "footer" .}}
+
+{{end}}

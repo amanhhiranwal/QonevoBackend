@@ -27,18 +27,37 @@ func (r *ProductRepository) CreateProduct(
 	product *models.Product,
 ) (int64, error) {
 
+	// query := `
+	// INSERT INTO products (
+	// 	name,
+	// 	slug,
+	// 	subheading,
+	// 	google_integration
+	// )
+	// VALUES ($1, $2, $3, $4)
+	// RETURNING id
+	// `
 	query := `
 	INSERT INTO products (
-		name,
-		slug,
-		subheading,
-		google_integration
+	name,
+	slug,
+	subheading,
+	google_integration,
+	product_type
 	)
-	VALUES ($1, $2, $3, $4)
+	VALUES ($1, $2, $3, $4, $5)
 	RETURNING id
 	`
 
 	var productID int64
+
+	// err := r.db.QueryRow(
+	// 	query,
+	// 	product.Name,
+	// 	product.Slug,
+	// 	product.Subheading,
+	// 	product.GoogleIntegration,
+	// ).Scan(&productID)
 
 	err := r.db.QueryRow(
 		query,
@@ -46,6 +65,7 @@ func (r *ProductRepository) CreateProduct(
 		product.Slug,
 		product.Subheading,
 		product.GoogleIntegration,
+		product.ProductType,
 	).Scan(&productID)
 
 	if err != nil {
@@ -115,71 +135,84 @@ func (r *ProductRepository) CreateProductSpecification(
 // Get Products
 // =====================================
 
-func (r *ProductRepository) GetProducts() (
-	[]models.Product,
-	error,
-) {
+// func (r *ProductRepository) GetProducts() (
+// 	[]models.Product,
+// 	error,
+// ) {
 
-	query := `
-	SELECT
-		p.id,
-		p.name,
-		p.slug,
-		p.subheading,
-		p.google_integration,
-		p.is_active,
-		pi.image_url,
-		p.created_at,
-		p.updated_at
-	FROM products p
-	LEFT JOIN product_images pi
-		ON pi.product_id = p.id
-		AND pi.is_primary = true
-	ORDER BY p.created_at DESC
-	`
+// 	query := `
+// 	SELECT
+// 		p.id,
+// 		p.product_type,
+// 		p.name,
+// 		p.slug,
+// 		p.subheading,
+// 		p.google_integration,
+// 		p.is_active,
+// 		pi.image_url,
+// 		p.created_at,
+// 		p.updated_at
+// 	FROM products p
+// 	LEFT JOIN product_images pi
+// 		ON pi.product_id = p.id
+// 		AND pi.is_primary = true
+// 	ORDER BY p.created_at DESC
+// 	`
 
-	rows, err := r.db.Query(query)
+// 	rows, err := r.db.Query(query)
 
-	if err != nil {
-		return nil, err
-	}
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	defer rows.Close()
+// 	defer rows.Close()
 
-	var products []models.Product
+// 	var products []models.Product
 
-	for rows.Next() {
+// 	for rows.Next() {
 
-		var product models.Product
+// 		var product models.Product
 
-		err := rows.Scan(
-			&product.ID,
-			&product.Name,
-			&product.Slug,
-			&product.Subheading,
-			&product.GoogleIntegration,
-			&product.IsActive,
-			&product.Thumbnail,
-			&product.CreatedAt,
-			&product.UpdatedAt,
-		)
+// 		// err := rows.Scan(
+// 		// 	&product.ID,
+// 		// 	&product.Name,
+// 		// 	&product.Slug,
+// 		// 	&product.Subheading,
+// 		// 	&product.GoogleIntegration,
+// 		// 	&product.IsActive,
+// 		// 	&product.Thumbnail,
+// 		// 	&product.CreatedAt,
+// 		// 	&product.UpdatedAt,
+// 		// )
+// 		err := rows.Scan(
+// 			&product.ID,
+// 			&product.ProductType,
+// 			&product.Name,
+// 			&product.Slug,
+// 			&product.Subheading,
+// 			&product.GoogleIntegration,
+// 			&product.IsActive,
+// 			&product.Thumbnail,
+// 			&product.CreatedAt,
+// 			&product.UpdatedAt,
+// 		)
 
-		if err != nil {
-			return nil, err
-		}
+// 		if err != nil {
+// 			return nil, err
+// 		}
 
-		products = append(
-			products,
-			product,
-		)
-	}
+// 		products = append(
+// 			products,
+// 			product,
+// 		)
+// 	}
 
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
+// 	if err := rows.Err(); err != nil {
+// 		return nil, err
+// 	}
 
-	return products, nil
-}
+// 	return products, nil
+// }
 
 // =====================================
 // Get Product By ID
@@ -192,6 +225,7 @@ func (r *ProductRepository) GetProductByID(
 	query := `
 	SELECT
 		p.id,
+		p.product_type,
 		p.name,
 		p.slug,
 		p.subheading,
@@ -214,6 +248,7 @@ func (r *ProductRepository) GetProductByID(
 		id,
 	).Scan(
 		&product.ID,
+		&product.ProductType,
 		&product.Name,
 		&product.Slug,
 		&product.Subheading,
@@ -372,17 +407,39 @@ func (r *ProductRepository) UpdateProduct(
 	product *models.Product,
 ) error {
 
+	// query := `
+	// UPDATE products
+	// SET
+	// 	name = $1,
+	// 	slug = $2,
+	// 	subheading = $3,
+	// 	google_integration = $4,
+	// 	is_active = $5,
+	// 	updated_at = NOW()
+	// WHERE id = $6
+	// `
 	query := `
 	UPDATE products
 	SET
-		name = $1,
-		slug = $2,
-		subheading = $3,
-		google_integration = $4,
-		is_active = $5,
-		updated_at = NOW()
-	WHERE id = $6
+	name = $1,
+	slug = $2,
+	subheading = $3,
+	google_integration = $4,
+	product_type = $5,
+	is_active = $6,
+	updated_at = NOW()
+	WHERE id = $7
 	`
+
+	// _, err := r.db.Exec(
+	// 	query,
+	// 	product.Name,
+	// 	product.Slug,
+	// 	product.Subheading,
+	// 	product.GoogleIntegration,
+	// 	product.IsActive,
+	// 	product.ID,
+	// )
 
 	_, err := r.db.Exec(
 		query,
@@ -390,6 +447,7 @@ func (r *ProductRepository) UpdateProduct(
 		product.Slug,
 		product.Subheading,
 		product.GoogleIntegration,
+		product.ProductType,
 		product.IsActive,
 		product.ID,
 	)
@@ -573,4 +631,161 @@ func (r *ProductRepository) GetProductSpecificationsByProductID(
 	}
 
 	return categories, nil
+}
+
+func (r *ProductRepository) GetProducts() (
+	[]models.Product,
+	error,
+) {
+
+	query := `
+	SELECT
+    p.id,
+    p.product_type,
+    p.name,
+    p.slug,
+    p.subheading,
+    p.google_integration,
+    p.is_active,
+
+    (
+        SELECT image_url
+        FROM product_images
+        WHERE product_id = p.id
+        ORDER BY is_primary DESC, created_at ASC
+        LIMIT 1
+    ) AS image_url,
+
+    p.created_at,
+    p.updated_at
+FROM products p
+ORDER BY p.created_at DESC
+	`
+	// query := `
+	// SELECT
+	// 	p.id,
+	// 	p.product_type,
+	// 	p.name,
+	// 	p.slug,
+	// 	p.subheading,
+	// 	p.google_integration,
+	// 	p.is_active,
+	// 	pi.image_url,
+	// 	p.created_at,
+	// 	p.updated_at
+	// FROM products p
+	// LEFT JOIN product_images pi
+	// 	ON pi.product_id = p.id
+	// 	AND pi.is_primary = true
+	// ORDER BY p.created_at DESC
+	// `
+
+	rows, err := r.db.Query(query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	return r.scanProducts(rows)
+}
+
+func (r *ProductRepository) scanProducts(
+	rows *sql.Rows,
+) ([]models.Product, error) {
+
+	var products []models.Product
+
+	for rows.Next() {
+
+		var product models.Product
+
+		err := rows.Scan(
+			&product.ID,
+			&product.ProductType,
+			&product.Name,
+			&product.Slug,
+			&product.Subheading,
+			&product.GoogleIntegration,
+			&product.IsActive,
+			&product.Thumbnail,
+			&product.CreatedAt,
+			&product.UpdatedAt,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		products = append(products, product)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return products, nil
+}
+
+func (r *ProductRepository) GetProductsByType(
+	productType string,
+) ([]models.Product, error) {
+
+	query := `
+	SELECT
+    p.id,
+    p.product_type,
+    p.name,
+    p.slug,
+    p.subheading,
+    p.google_integration,
+    p.is_active,
+
+    (
+        SELECT image_url
+        FROM product_images
+        WHERE product_id = p.id
+        ORDER BY is_primary DESC, created_at ASC
+        LIMIT 1
+    ) AS image_url,
+
+    p.created_at,
+    p.updated_at
+FROM products p
+WHERE p.product_type = $1
+ORDER BY p.created_at DESC
+	`
+	// query := `
+	// SELECT
+	// 	p.id,
+	// 	p.product_type,
+	// 	p.name,
+	// 	p.slug,
+	// 	p.subheading,
+	// 	p.google_integration,
+	// 	p.is_active,
+	// 	pi.image_url,
+	// 	p.created_at,
+	// 	p.updated_at
+	// FROM products p
+	// LEFT JOIN product_images pi
+	// 	ON pi.product_id = p.id
+	// 	AND pi.is_primary = true
+	// WHERE p.product_type = $1
+	// ORDER BY p.created_at DESC
+	// `
+
+	rows, err := r.db.Query(
+		query,
+		productType,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	return r.scanProducts(rows)
 }

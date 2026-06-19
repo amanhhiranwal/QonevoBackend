@@ -7,6 +7,8 @@ type Product struct {
 
 	Name string `json:"name"`
 
+	ProductType *string `json:"product_type,omitempty"`
+
 	Slug string `json:"slug"`
 
 	Subheading string `json:"subheading"`

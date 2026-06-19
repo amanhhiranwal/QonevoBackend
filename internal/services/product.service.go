@@ -72,64 +72,6 @@ func (s *ProductService) CreateProductImage(
 	)
 }
 
-// =====================================
-// Get All Products
-// =====================================
-
-// func (s *ProductService) GetProducts() (
-// 	[]models.Product,
-// 	error,
-// ) {
-
-// 	products, err := s.repo.GetProducts()
-
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	// =====================================
-// 	// Load images for each product
-// 	// =====================================
-
-// 	for i := range products {
-
-// 		images, err := s.repo.GetProductImagesByProductID(
-// 			products[i].ID,
-// 		)
-
-// 		if err != nil {
-// 			return nil, err
-// 		}
-
-// 		products[i].Images = images
-
-// 		// =====================================
-// 		// Set Thumbnail
-// 		// =====================================
-
-// 		for _, image := range images {
-
-// 			if image.IsPrimary {
-
-// 				products[i].Thumbnail =
-// 					&image.ImageURL
-
-// 				break
-// 			}
-// 		}
-
-// 		// fallback thumbnail
-// 		if products[i].Thumbnail == nil &&
-// 			len(images) > 0 {
-
-// 			products[i].Thumbnail =
-// 				&images[0].ImageURL
-// 		}
-// 	}
-
-// 	return products, nil
-// }
-
 func (s *ProductService) GetProducts() (
 	[]models.Product,
 	error,
@@ -381,4 +323,13 @@ func generateSlug(
 	)
 
 	return slug
+}
+
+func (s *ProductService) GetProductsByType(
+	productType string,
+) ([]models.Product, error) {
+
+	return s.repo.GetProductsByType(
+		productType,
+	)
 }
