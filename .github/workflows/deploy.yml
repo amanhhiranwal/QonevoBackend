@@ -80,14 +80,14 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Deploy to VPS
+      - name: Deploy
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          passphrase: ${{ secrets.EC2_SSH_PASSPHRASE }}
+          username: qonevo
           key: ${{ secrets.EC2_SSH_KEY }}
-          port: ${{ secrets.EC2_PORT }}
+          port: 22
+
           script: |
             set -e
 
@@ -100,14 +100,10 @@ jobs:
 
             go mod tidy
 
-            go build -o bin/qonevo-backend cmd/server/main.go
+            go build -o qonevo-backend cmd/server/main.go
 
-            systemctl restart qonevoBackend
+            sudo systemctl restart qonevoBackend
 
             sleep 5
 
-            systemctl is-active qonevoBackend
-
-            curl -f https://api.qonevo.co.in/login
-
-            echo "Deployment successful"
+            sudo systemctl is-active qonevoBackend
