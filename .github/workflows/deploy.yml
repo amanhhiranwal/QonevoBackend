@@ -84,9 +84,10 @@ jobs:
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: qonevo
+          username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
+          passphrase: ${{ secrets.EC2_SSH_PASSPHRASE }}
+          port: ${{ secrets.EC2_PORT }}
 
           script: |
             set -e
