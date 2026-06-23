@@ -1,8 +1,11 @@
 package services
 
 import (
+	"context"
+	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"qonevo-backend/internal/models"
 	"qonevo-backend/internal/repositories"
@@ -28,22 +31,39 @@ func NewProductService(
 // Create Product
 // =====================================
 
+// func (s *ProductService) CreateProduct(
+// 	product *models.Product,
+// ) (int64, error) {
+
+// 	product.Slug = generateSlug(
+// 		product.Name,
+// 	)
+
+// 	// default active
+// 	if !product.IsActive {
+// 		product.IsActive = true
+// 	}
+
+// 	return s.repo.CreateProduct(
+// 		product,
+// 	)
+// }
+
 func (s *ProductService) CreateProduct(
 	product *models.Product,
 ) (int64, error) {
 
-	product.Slug = generateSlug(
-		product.Name,
+	product.Slug = fmt.Sprintf(
+		"%s-%d",
+		generateSlug(product.Name),
+		time.Now().UnixNano(),
 	)
 
-	// default active
 	if !product.IsActive {
 		product.IsActive = true
 	}
 
-	return s.repo.CreateProduct(
-		product,
-	)
+	return s.repo.CreateProduct(product)
 }
 
 // =====================================
@@ -243,6 +263,15 @@ func (s *ProductService) UpdateProduct(
 	)
 }
 
+func (s *ProductService) GetProductSpecsMap(
+	productID int64,
+) (map[string]string, error) {
+
+	return s.repo.GetProductSpecsMap(
+		productID,
+	)
+}
+
 // =====================================
 // Delete Product
 // =====================================
@@ -279,6 +308,17 @@ func (s *ProductService) CountProducts() (
 ) {
 
 	return s.repo.CountProducts()
+}
+
+func (s *ProductService) GetByID(
+	ctx context.Context,
+	id string,
+) (*models.Product, error) {
+
+	return s.repo.FindByID(
+		ctx,
+		id,
+	)
 }
 
 // =====================================
@@ -325,11 +365,69 @@ func generateSlug(
 	return slug
 }
 
+// func (s *ProductService) GetProductsByType(
+// 	productType string,
+// ) ([]models.Product, error) {
+
+// 	return s.repo.GetProductsByType(
+// 		productType,
+// 	)
+// }
+
 func (s *ProductService) GetProductsByType(
 	productType string,
 ) ([]models.Product, error) {
 
-	return s.repo.GetProductsByType(
+	products, err := s.repo.GetProductsByType(
 		productType,
 	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for i := range products {
+
+		images, err := s.repo.GetProductImagesByProductID(
+			products[i].ID,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		products[i].Images = images
+
+		for _, image := range images {
+
+			if image.IsPrimary {
+
+				products[i].Thumbnail =
+					&image.ImageURL
+
+				break
+			}
+		}
+
+		if products[i].Thumbnail == nil &&
+			len(images) > 0 {
+
+			products[i].Thumbnail =
+				&images[0].ImageURL
+		}
+
+		specifications, err :=
+			s.repo.GetProductSpecificationsByProductID(
+				products[i].ID,
+			)
+
+		if err != nil {
+			return nil, err
+		}
+
+		products[i].Specifications =
+			specifications
+	}
+
+	return products, nil
 }

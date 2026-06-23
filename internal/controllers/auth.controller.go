@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strings"
 
@@ -218,7 +219,6 @@ func (a *AuthController) LoginPagePost(
 	)
 }
 
-
 func (a *AuthController) RegisterPagePost(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -252,6 +252,7 @@ func (a *AuthController) RegisterPagePost(
 	)
 
 	if err != nil {
+		log.Printf("registration failed: %v\n", err)
 		http.Redirect(w, r, "/register", http.StatusSeeOther)
 		return
 	}

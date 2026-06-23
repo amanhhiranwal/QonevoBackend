@@ -67,6 +67,15 @@ func ProductRoutes(
 	)
 
 	mux.Handle(
+		"/camera/edit/",
+		middleware.RequireAuth(
+			http.HandlerFunc(
+				product.EditCameraPage,
+			),
+		),
+	)
+
+	mux.Handle(
 		"/cameras",
 		middleware.RequireAuth(
 			http.HandlerFunc(

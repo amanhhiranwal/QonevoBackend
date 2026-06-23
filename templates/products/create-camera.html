@@ -15,22 +15,27 @@
             <div class="form-card">
 
                 <div class="form-header">
-                    <h1>Create Camera</h1>
-                    <p>Add a new camera to inventory</p>
+                    <h1>
+                        {{if .IsEdit}}
+                        Edit Camera
+                        {{else}}
+                        Create Camera
+                        {{end}}
+                    </h1>
+
+                    <p>
+                        {{if .IsEdit}}
+                        Update camera details
+                        {{else}}
+                        Add a new camera to inventory
+                        {{end}}
+                    </p>
                 </div>
 
-                <form
-                    method="POST"
-                    action="/products"
-                    enctype="multipart/form-data"
-                    class="product-form"
-                >
+                <form method="POST" action="{{if .IsEdit}}/products/update/{{.Product.ID}}{{else}}/products{{end}}"
+                    enctype="multipart/form-data" class="product-form">
 
-                    <input
-                        type="hidden"
-                        name="product_type"
-                        value="CAMERA"
-                    >
+                    <input type="hidden" name="product_type" value="CAMERA">
 
                     <div class="form-grid">
 
@@ -39,20 +44,13 @@
                         <div class="form-group">
                             <label>Camera Name</label>
 
-                            <input
-                                type="text"
-                                name="name"
-                                required
-                                class="product-input"
-                            >
+                            <input type="text" name="name" required class="product-input" value="{{.Product.Name}}">
                         </div>
 
                         <div class="form-group checkbox-group">
                             <label class="checkbox-label">
-                                <input
-                                    type="checkbox"
-                                    name="google_integration"
-                                >
+                                <input type="checkbox" name="google_integration" {{if
+                                    .Product.GoogleIntegration}}checked{{end}}>
                                 Google Integration
                             </label>
                         </div>
@@ -60,11 +58,8 @@
                         <div class="form-group full-width">
                             <label>Subheading</label>
 
-                            <textarea
-                                name="subheading"
-                                rows="3"
-                                class="product-input"
-                            ></textarea>
+                            <textarea name="subheading" rows="3"
+                                class="product-input">{{.Product.Subheading}}</textarea>
                         </div>
 
                         <!-- CAMERA SPECIFICATIONS -->
@@ -83,11 +78,8 @@
                             <input type="hidden" name="spec_category[]" value="Camera">
                             <input type="hidden" name="spec_key[]" value="Model">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input"
+                                value="{{index .Specs `Model`}}">
                         </div>
 
                         <!-- MEGAPIXEL -->
@@ -98,12 +90,8 @@
                             <input type="hidden" name="spec_category[]" value="Camera">
                             <input type="hidden" name="spec_key[]" value="Megapixel">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="48MP"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="48MP"
+                                value="{{index .Specs `Megapixel`}}">
                         </div>
 
                         <!-- PTZ -->
@@ -114,14 +102,11 @@
                             <input type="hidden" name="spec_category[]" value="Camera">
                             <input type="hidden" name="spec_key[]" value="PTZ & Auto Focus">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input"
+                                value="{{index .Specs `PTZ & Auto Focus`}}">
                         </div>
 
-                        <!-- MIC -->
+                        <!-- MICROPHONE -->
 
                         <div class="form-group">
                             <label>Microphone</label>
@@ -129,11 +114,8 @@
                             <input type="hidden" name="spec_category[]" value="Camera">
                             <input type="hidden" name="spec_key[]" value="Microphone">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input"
+                                value="{{index .Specs `Microphone`}}">
                         </div>
 
                         <!-- HDMI -->
@@ -144,11 +126,8 @@
                             <input type="hidden" name="spec_category[]" value="Camera">
                             <input type="hidden" name="spec_key[]" value="HDMI">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input"
+                                value="{{index .Specs `HDMI`}}">
                         </div>
 
                         <!-- USB -->
@@ -159,11 +138,7 @@
                             <input type="hidden" name="spec_category[]" value="Camera">
                             <input type="hidden" name="spec_key[]" value="USB">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" value="{{index .Specs `USB`}}">
                         </div>
 
                         <!-- DIGITAL ZOOM -->
@@ -174,11 +149,8 @@
                             <input type="hidden" name="spec_category[]" value="Camera">
                             <input type="hidden" name="spec_key[]" value="Digital Zoom">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input"
+                                value="{{index .Specs `Digital Zoom`}}">
                         </div>
 
                         <!-- WEIGHT -->
@@ -189,16 +161,13 @@
                             <input type="hidden" name="spec_category[]" value="Camera">
                             <input type="hidden" name="spec_key[]" value="Weight">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input"
+                                value="{{index .Specs `Weight`}}">
                         </div>
 
                         <!-- DIMENSIONS -->
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label>Dimensions</label>
 
                             <input type="hidden" name="spec_category[]" value="Camera">
@@ -208,12 +177,13 @@
                                 type="text"
                                 name="spec_value[]"
                                 class="product-input"
+                                value="{{index .Specs `Dimensions`}}"
                             >
-                        </div>
+                        </div> -->
 
                         <!-- POWER -->
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label>Power Consumption</label>
 
                             <input type="hidden" name="spec_category[]" value="Camera">
@@ -223,10 +193,11 @@
                                 type="text"
                                 name="spec_value[]"
                                 class="product-input"
+                                value="{{index .Specs `Power Consumption`}}"
                             >
-                        </div>
+                        </div> -->
 
-                        <!-- OS -->
+                        <!-- OPERATING SYSTEMS -->
 
                         <div class="form-group full-width">
                             <label>Operating Systems</label>
@@ -234,11 +205,8 @@
                             <input type="hidden" name="spec_category[]" value="Camera">
                             <input type="hidden" name="spec_key[]" value="Operating Systems">
 
-                            <textarea
-                                name="spec_value[]"
-                                rows="3"
-                                class="product-input"
-                            ></textarea>
+                            <textarea name="spec_value[]" rows="3"
+                                class="product-input">{{index .Specs `Operating Systems`}}</textarea>
                         </div>
 
                         <!-- IMAGES -->
@@ -247,12 +215,7 @@
 
                             <label>Camera Images</label>
 
-                            <input
-                                type="file"
-                                name="images"
-                                multiple
-                                class="product-input"
-                            >
+                            <input type="file" name="images" multiple class="product-input">
 
                         </div>
 
@@ -260,27 +223,145 @@
 
                     <div class="form-actions">
 
-                        <a
-                            href="/cameras"
-                            class="btn-secondary"
-                        >
+                        <a href="/cameras" class="btn-secondary">
                             Cancel
                         </a>
 
-                        <button
-                            type="submit"
-                            class="btn-primary"
-                        >
+                        <button type="submit" class="btn-primary">
+                            {{if .IsEdit}}
+                            Update Camera
+                            {{else}}
                             Save Camera
+                            {{end}}
                         </button>
 
                     </div>
 
                 </form>
 
+                <!-- IMAGES -->
+
+                <!-- <div class="form-group full-width">
+
+                    <label>Camera Images</label>
+
+                    <input type="file" name="images" multiple class="product-input">
+
+                </div> -->
+
+
+                {{if .IsEdit}}
+
+                <div class="product-images-section">
+
+                    <div class="images-header">
+
+                        <div>
+
+                            <h3>Product Images</h3>
+
+                            <p class="images-subtitle">
+                                Upload new images and manage existing gallery.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Upload Additional Images -->
+
+                    <form method="POST" action="/products/images/upload/{{.Product.ID}}" enctype="multipart/form-data"
+                        class="upload-image-form">
+
+                        <div class="form-group">
+
+                            <label>Upload More Images</label>
+
+                            <input type="file" name="images" multiple accept="image/*" class="product-input">
+
+                            <small class="form-help">
+                                Select one or more images to add to this camera.
+                            </small>
+
+                        </div>
+
+                        <button type="submit" class="btn-primary">
+                            Upload Images
+                        </button>
+
+                    </form>
+
+
+                    <!-- Existing Gallery -->
+
+                    {{if .Product.Images}}
+
+                    <div class="edit-product-gallery">
+
+                        {{range .Product.Images}}
+
+                        <div class="edit-gallery-card">
+
+                            <div class="edit-gallery-image-wrapper">
+
+                                <img src="{{.ImageURL}}" alt="Camera Image" class="edit-gallery-image">
+
+                                {{if .IsPrimary}}
+
+                                <span class="primary-image-badge">
+                                    Primary
+                                </span>
+
+                                {{end}}
+
+                            </div>
+
+                            <div class="edit-gallery-actions">
+
+                                <form method="POST" action="/products/image/delete/{{.ID}}" class="image-action-form"
+                                    onsubmit="return confirm('Delete this image?')">
+
+                                    <button type="submit" class="btn-image-action danger">
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                        {{end}}
+
+                    </div>
+
+                    {{else}}
+
+                    <div class="empty-image-state">
+
+                        <div class="empty-image-icon">
+                            🖼️
+                        </div>
+
+                        <h4>No Images Uploaded</h4>
+
+                        <p>
+                            Upload camera images to build your gallery.
+                        </p>
+
+                    </div>
+
+                    {{end}}
+
+                </div>
+
+                {{end}}
+
             </div>
 
         </section>
+
+
 
     </main>
 

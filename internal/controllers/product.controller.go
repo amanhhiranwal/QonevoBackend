@@ -379,12 +379,24 @@ func (c *ProductController) Store(
 	// Redirect
 	// =====================================
 
-	http.Redirect(
-		w,
-		r,
-		"/products",
-		http.StatusSeeOther,
-	)
+	if productType == "CAMERA" {
+
+		http.Redirect(
+			w,
+			r,
+			"/cameras",
+			http.StatusSeeOther,
+		)
+
+	} else {
+
+		http.Redirect(
+			w,
+			r,
+			"/products",
+			http.StatusSeeOther,
+		)
+	}
 }
 
 // =====================================
@@ -635,12 +647,24 @@ func (c *ProductController) Update(
 		return
 	}
 
-	http.Redirect(
-		w,
-		r,
-		"/products",
-		http.StatusSeeOther,
-	)
+	if productType == "CAMERA" {
+
+		http.Redirect(
+			w,
+			r,
+			"/cameras",
+			http.StatusSeeOther,
+		)
+
+	} else {
+
+		http.Redirect(
+			w,
+			r,
+			"/products",
+			http.StatusSeeOther,
+		)
+	}
 }
 
 // =====================================
@@ -685,9 +709,20 @@ func (c *ProductController) Delete(
 		return
 	}
 
-	err = c.service.DeleteProduct(
+	product, err := c.service.GetProductByID(
 		productID,
 	)
+
+	if err != nil {
+
+		http.Error(
+			w,
+			"product not found",
+			http.StatusNotFound,
+		)
+
+		return
+	}
 
 	if err != nil {
 
@@ -705,17 +740,101 @@ func (c *ProductController) Delete(
 		return
 	}
 
-	http.Redirect(
-		w,
-		r,
-		"/products",
-		http.StatusSeeOther,
-	)
+	if product.ProductType != nil &&
+		*product.ProductType == "CAMERA" {
+
+		http.Redirect(
+			w,
+			r,
+			"/cameras",
+			http.StatusSeeOther,
+		)
+
+	} else {
+
+		http.Redirect(
+			w,
+			r,
+			"/products",
+			http.StatusSeeOther,
+		)
+	}
 }
 
 // =====================================
 // GET PRODUCTS API
 // =====================================
+
+// func (c *ProductController) GetProductsAPI(
+// 	w http.ResponseWriter,
+// 	r *http.Request,
+// ) {
+
+// 	limitParam := r.URL.Query().Get(
+// 		"limit",
+// 	)
+
+// 	products, err := c.service.GetProducts()
+
+// 	if err != nil {
+
+// 		log.Printf(
+// 			"GET PRODUCTS API ERROR: %v",
+// 			err,
+// 		)
+
+// 		http.Error(
+// 			w,
+// 			err.Error(),
+// 			http.StatusInternalServerError,
+// 		)
+
+// 		return
+// 	}
+
+// 	if limitParam != "" {
+
+// 		limit, err := strconv.Atoi(
+// 			limitParam,
+// 		)
+
+// 		if err == nil &&
+// 			limit > 0 &&
+// 			limit < len(products) {
+
+// 			products = products[:limit]
+// 		}
+// 	}
+
+// 	w.Header().Set(
+// 		"Content-Type",
+// 		"application/json",
+// 	)
+
+// 	w.WriteHeader(
+// 		http.StatusOK,
+// 	)
+
+// 	err = json.NewEncoder(w).Encode(
+// 		products,
+// 	)
+
+// 	if err != nil {
+
+// 		log.Printf(
+// 			"JSON ENCODE ERROR: %v",
+// 			err,
+// 		)
+
+// 		http.Error(
+// 			w,
+// 			"failed to encode products",
+// 			http.StatusInternalServerError,
+// 		)
+
+// 		return
+// 	}
+// }
 
 func (c *ProductController) GetProductsAPI(
 	w http.ResponseWriter,
@@ -726,7 +845,28 @@ func (c *ProductController) GetProductsAPI(
 		"limit",
 	)
 
-	products, err := c.service.GetProducts()
+	productType := strings.ToUpper(
+		strings.TrimSpace(
+			r.URL.Query().Get("type"),
+		),
+	)
+
+	var (
+		products []models.Product
+		err      error
+	)
+
+	// Filter by type if provided
+	if productType != "" {
+
+		products, err = c.service.GetProductsByType(
+			productType,
+		)
+
+	} else {
+
+		products, err = c.service.GetProducts()
+	}
 
 	if err != nil {
 
@@ -744,6 +884,7 @@ func (c *ProductController) GetProductsAPI(
 		return
 	}
 
+	// Apply limit
 	if limitParam != "" {
 
 		limit, err := strconv.Atoi(
@@ -810,6 +951,8 @@ func (c *ProductController) CreateCameraPage(
 		map[string]any{
 			"Title":      "Create Camera",
 			"IsLoggedIn": true,
+			"IsEdit":     false,
+			"Specs":      map[string]string{}, // <-- ADD THIS
 		},
 	)
 }
@@ -844,6 +987,74 @@ func (c *ProductController) CameraIndex(
 			"Title":      "Cameras",
 			"IsLoggedIn": true,
 			"Products":   products,
+		},
+	)
+}
+
+func (p *ProductController) EditCameraPage(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+
+	idStr := strings.TrimPrefix(
+		r.URL.Path,
+		"/camera/edit/",
+	)
+
+	productID, err := strconv.ParseInt(
+		idStr,
+		10,
+		64,
+	)
+
+	if err != nil {
+
+		http.NotFound(
+			w,
+			r,
+		)
+
+		return
+	}
+
+	product, err := p.service.GetProductByID(
+		productID,
+	)
+
+	if err != nil {
+
+		http.NotFound(
+			w,
+			r,
+		)
+
+		return
+	}
+
+	specs, err := p.service.GetProductSpecsMap(
+		productID,
+	)
+
+	if err != nil {
+
+		http.Error(
+			w,
+			err.Error(),
+			http.StatusInternalServerError,
+		)
+
+		return
+	}
+
+	p.page.render(
+		w,
+		"create-camera.html",
+		map[string]any{
+			"Title":      "Edit Camera",
+			"IsLoggedIn": true,
+			"IsEdit":     true,
+			"Product":    product,
+			"Specs":      specs,
 		},
 	)
 }

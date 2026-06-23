@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	"database/sql"
 
 	"qonevo-backend/internal/models"
@@ -378,6 +379,51 @@ func (r *ProductRepository) GetProductSpecifications(
 	return categories, nil
 }
 
+func (r *ProductRepository) GetProductSpecsMap(
+	productID int64,
+) (map[string]string, error) {
+
+	query := `
+		SELECT
+			spec_key,
+			spec_value
+		FROM product_specifications
+		WHERE product_id = $1
+	`
+
+	rows, err := r.db.Query(
+		query,
+		productID,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	specs := make(map[string]string)
+
+	for rows.Next() {
+
+		var key string
+		var value string
+
+		err := rows.Scan(
+			&key,
+			&value,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		specs[key] = value
+	}
+
+	return specs, nil
+}
+
 // =====================================
 // Delete Product Image
 // =====================================
@@ -397,6 +443,90 @@ func (r *ProductRepository) DeleteProductImage(
 	)
 
 	return err
+}
+
+func (r *ProductRepository) GetSpecsMap(
+	ctx context.Context,
+	productID int64,
+) (map[string]string, error) {
+
+	query := `
+    SELECT
+        key,
+        value
+    FROM product_specs
+    WHERE product_id = $1
+    `
+
+	rows, err := r.db.QueryContext(
+		ctx,
+		query,
+		productID,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	specs := make(map[string]string)
+
+	for rows.Next() {
+
+		var key string
+		var value string
+
+		err := rows.Scan(
+			&key,
+			&value,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		specs[key] = value
+	}
+
+	return specs, nil
+}
+
+func (r *ProductRepository) FindByID(
+	ctx context.Context,
+	id string,
+) (*models.Product, error) {
+
+	query := `
+    SELECT
+        id,
+        name,
+        subheading,
+        google_integration,
+        is_active
+    FROM products
+    WHERE id = $1
+    `
+
+	var p models.Product
+
+	err := r.db.QueryRowContext(
+		ctx,
+		query,
+		id,
+	).Scan(
+		&p.ID,
+		&p.Name,
+		&p.Subheading,
+		&p.GoogleIntegration,
+		&p.IsActive,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &p, nil
 }
 
 // =====================================
