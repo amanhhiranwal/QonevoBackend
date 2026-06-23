@@ -250,13 +250,22 @@ func (s *ProductService) GetProductByID(
 // Update Product
 // =====================================
 
+// func (s *ProductService) UpdateProduct(
+// 	product *models.Product,
+// ) error {
+
+// 	product.Slug = generateSlug(
+// 		product.Name,
+// 	)
+
+// 	return s.repo.UpdateProduct(
+// 		product,
+// 	)
+// }
+
 func (s *ProductService) UpdateProduct(
 	product *models.Product,
 ) error {
-
-	product.Slug = generateSlug(
-		product.Name,
-	)
 
 	return s.repo.UpdateProduct(
 		product,

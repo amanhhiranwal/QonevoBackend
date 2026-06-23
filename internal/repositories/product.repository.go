@@ -552,13 +552,12 @@ func (r *ProductRepository) UpdateProduct(
 	UPDATE products
 	SET
 	name = $1,
-	slug = $2,
-	subheading = $3,
-	google_integration = $4,
-	product_type = $5,
-	is_active = $6,
+	subheading = $2,
+	google_integration = $3,
+	product_type = $4,
+	is_active = $5,
 	updated_at = NOW()
-	WHERE id = $7
+	WHERE id = $6
 	`
 
 	// _, err := r.db.Exec(
@@ -574,7 +573,6 @@ func (r *ProductRepository) UpdateProduct(
 	_, err := r.db.Exec(
 		query,
 		product.Name,
-		product.Slug,
 		product.Subheading,
 		product.GoogleIntegration,
 		product.ProductType,
