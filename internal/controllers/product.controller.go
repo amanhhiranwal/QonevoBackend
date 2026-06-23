@@ -709,6 +709,7 @@ func (c *ProductController) Delete(
 		return
 	}
 
+	// Load product before deleting so we know where to redirect
 	product, err := c.service.GetProductByID(
 		productID,
 	)
@@ -723,6 +724,11 @@ func (c *ProductController) Delete(
 
 		return
 	}
+
+	// Actually delete the product
+	err = c.service.DeleteProduct(
+		productID,
+	)
 
 	if err != nil {
 
@@ -740,6 +746,7 @@ func (c *ProductController) Delete(
 		return
 	}
 
+	// Redirect according to product type
 	if product.ProductType != nil &&
 		*product.ProductType == "CAMERA" {
 
