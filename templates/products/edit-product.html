@@ -17,10 +17,16 @@
                 <div class="form-header">
                     <h1>Edit IFP Products</h1>
                     <p>Update product information and manage images</p>
-                </div>
+                </div> 
 
                 <form method="POST" action="/products/update/{{.Product.ID}}" enctype="multipart/form-data"
                     class="product-form">
+
+                    <input
+                        type="hidden"
+                        name="product_type"
+                        value="IFP"
+                    >
 
                     <div class="form-grid">
 
