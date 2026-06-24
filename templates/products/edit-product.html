@@ -17,16 +17,12 @@
                 <div class="form-header">
                     <h1>Edit IFP Products</h1>
                     <p>Update product information and manage images</p>
-                </div> 
+                </div>
 
                 <form method="POST" action="/products/update/{{.Product.ID}}" enctype="multipart/form-data"
                     class="product-form">
 
-                    <input
-                        type="hidden"
-                        name="product_type"
-                        value="IFP"
-                    >
+                    <input type="hidden" name="product_type" value="IFP">
 
                     <div class="form-grid">
 
@@ -195,7 +191,78 @@
 
                         </div>
 
+
+
+                        <div class="full-width">
+                            <h3 class="spec-title">
+                                Processor
+                            </h3>
+                        </div>
+
+                        <!-- PROCESSOR -->
+                        <div class="form-group">
+                            <label>Processor</label>
+
+                            <input type="hidden" name="spec_category[]" value="Processor">
+                            <input type="hidden" name="spec_key[]" value="Processor">
+
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Processor" "Processor"}}' class="product-input"
+                                placeholder="Intel Core i5 / AMD Ryzen 5">
+                        </div>
+
+                        <!-- PROCESSOR SPEED -->
+                        <div class="form-group">
+                            <label>Processor Speed</label>
+
+                            <input type="hidden" name="spec_category[]" value="Processor">
+                            <input type="hidden" name="spec_key[]" value="Processor Speed">
+
+                            <input type="text" name="spec_value[]"
+                                value='{{.Product.GetSpecValue "Processor" "Processor Speed"}}' class="product-input"
+                                placeholder="3.2 GHz">
+                        </div>
+
+
+                        <!-- EDLA -->
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+
+                                <input type="hidden" name="spec_category[]" value="Processor">
+
+                                <input type="hidden" name="spec_key[]" value="EDLA">
+
+                                <input type="hidden" name="spec_value[]" id="edla-value"
+                                    value='{{if eq (.Product.GetSpecValue "Processor" "EDLA") "Yes"}}Yes{{else}}No{{end}}'>
+
+                                <input type="checkbox" id="edla-checkbox" {{if eq
+                                    (.Product.GetSpecValue "Processor" "EDLA" ) "Yes" }}checked{{end}}>
+
+                                EDLA
+
+                            </label>
+                        </div>
+
+                        <!-- NFC -->
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+
+                                <input type="hidden" name="spec_category[]" value="Processor">
+
+                                <input type="hidden" name="spec_key[]" value="NFC">
+
+                                <input type="hidden" name="spec_value[]" id="nfc-value"
+                                    value='{{if eq (.Product.GetSpecValue "Processor" "NFC") "Yes"}}Yes{{else}}No{{end}}'>
+
+                                <input type="checkbox" id="nfc-checkbox" {{if eq
+                                    (.Product.GetSpecValue "Processor" "NFC" ) "Yes" }}checked{{end}}>
+
+                                NFC
+
+                            </label>
+                        </div>
                         <!-- TOUCH -->
+
 
                         <div class="full-width">
                             <h3 class="spec-title">
@@ -554,6 +621,18 @@
     </main>
 
 </div>
+
+<script>
+    document.getElementById("edla-checkbox").addEventListener("change", function () {
+        document.getElementById("edla-value").value =
+            this.checked ? "Yes" : "No";
+    });
+
+    document.getElementById("nfc-checkbox").addEventListener("change", function () {
+        document.getElementById("nfc-value").value =
+            this.checked ? "Yes" : "No";
+    });
+</script>
 
 {{template "footer" .}}
 

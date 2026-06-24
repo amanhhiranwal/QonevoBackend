@@ -298,10 +298,10 @@ func (c *ProductController) Store(
 
 		files := form.File["images"]
 
-		log.Printf(
-			"received %d images",
-			len(files),
-		)
+		// log.Printf(
+		// 	"received %d images",
+		// 	len(files),
+		// )
 
 		for index, fileHeader := range files {
 
@@ -630,6 +630,67 @@ func (c *ProductController) Update(
 	err = c.service.UpdateProduct(
 		product,
 	)
+	specCategories := r.Form["spec_category[]"]
+	specKeys := r.Form["spec_key[]"]
+	specValues := r.Form["spec_value[]"]
+
+	// penguin
+
+	// log.Println("categories:", len(specCategories))
+	// log.Println("keys:", len(specKeys))
+	// log.Println("values:", len(specValues))
+
+	// log.Println("specCategories:", specCategories)
+	// log.Println("specKeys:", specKeys)
+	// log.Println("specValues:", specValues)
+
+	for i := range specKeys {
+
+		if i >= len(specCategories) || i >= len(specValues) {
+			continue
+		}
+
+		key := strings.TrimSpace(specKeys[i])
+		value := strings.TrimSpace(specValues[i])
+		category := strings.TrimSpace(specCategories[i])
+
+		if key == "" || value == "" {
+			continue
+		}
+
+		specification := &models.ProductSpecification{
+			ProductID: productID,
+			Category:  category,
+			SpecKey:   key,
+			SpecValue: value,
+		}
+
+		saveErr := c.service.CreateProductSpecification(specification)
+
+		if saveErr != nil {
+			log.Printf(
+				"failed to save specification %s=%s: %v",
+				key,
+				value,
+				saveErr,
+			)
+		} else {
+			log.Printf(
+				"saved specification %s=%s",
+				key,
+				value,
+			)
+		}
+
+		// if saveErr != nil {
+		// 	log.Printf(
+		// 		"failed to save specification %s=%s: %v",
+		// 		key,
+		// 		value,
+		// 		saveErr,
+		// 	)
+		// }
+	}
 
 	if err != nil {
 

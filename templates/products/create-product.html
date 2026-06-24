@@ -19,18 +19,9 @@
                     <p>Add a new product to inventory</p>
                 </div>
 
-                <form
-                    method="POST"
-                    action="/products"
-                    enctype="multipart/form-data"
-                    class="product-form"
-                >
-                <input
-                        type="hidden"
-                        name="product_type"
-                        value="IFP"
-                    >
- 
+                <form method="POST" action="/products" enctype="multipart/form-data" class="product-form">
+                    <input type="hidden" name="product_type" value="IFP">
+
                     <div class="form-grid">
 
                         <!-- ===================== -->
@@ -40,21 +31,13 @@
                         <div class="form-group">
                             <label>Product Name</label>
 
-                            <input
-                                type="text"
-                                name="name"
-                                required
-                                class="product-input"
-                            >
+                            <input type="text" name="name" required class="product-input">
                         </div>
 
                         <div class="form-group checkbox-group">
                             <label class="checkbox-label">
 
-                                <input
-                                    type="checkbox"
-                                    name="google_integration"
-                                >
+                                <input type="checkbox" name="google_integration">
 
                                 Google Integration
                             </label>
@@ -63,11 +46,7 @@
                         <div class="form-group full-width">
                             <label>Subheading</label>
 
-                            <textarea
-                                name="subheading"
-                                rows="3"
-                                class="product-input"
-                            ></textarea>
+                            <textarea name="subheading" rows="3" class="product-input"></textarea>
                         </div>
 
                         <!-- ===================== -->
@@ -83,144 +62,128 @@
                         <div class="form-group">
                             <label>Size</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Display"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Display">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Size"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Size">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder='Example: 65"'
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder='Example: 65"'>
                         </div>
 
                         <div class="form-group">
                             <label>Technology</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Display"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Display">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Technology"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Technology">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="Example: OLED"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="Example: OLED">
                         </div>
 
                         <div class="form-group">
                             <label>Resolution Ratio</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Display"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Display">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Resolution Ratio"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Resolution Ratio">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="3840x2160"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="3840x2160">
                         </div>
 
                         <div class="form-group">
                             <label>Refresh Rate</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Display"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Display">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Refresh Rate"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Refresh Rate">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="60Hz"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="60Hz">
                         </div>
 
                         <div class="form-group">
                             <label>Brightness</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Display"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Display">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Luminance"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Luminance">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="500 nits"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="500 nits">
                         </div>
 
                         <div class="form-group">
                             <label>Viewing Angle</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Display"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Display">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Viewing Angle"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Viewing Angle">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="178°"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="178°">
                         </div>
 
                         <!-- ===================== -->
                         <!-- TOUCH -->
                         <!-- ===================== -->
+
+                        <div class="full-width">
+                            <h3 class="spec-title">
+                                Processor
+                            </h3>
+                        </div>
+
+                        <!-- Processor -->
+                        <div class="form-group">
+                            <label>Processor</label>
+
+                            <input type="hidden" name="spec_category[]" value="Processor">
+
+                            <input type="hidden" name="spec_key[]" value="Processor">
+
+                            <input type="text" name="spec_value[]" class="product-input"
+                                placeholder="Intel Core i5 / AMD Ryzen 5">
+                        </div>
+
+                        <!-- Processor Speed -->
+                        <div class="form-group">
+                            <label>Processor Speed</label>
+
+                            <input type="hidden" name="spec_category[]" value="Processor">
+
+                            <input type="hidden" name="spec_key[]" value="Processor Speed">
+
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="3.2 GHz">
+                        </div>
+
+
+                        <!-- EDLA -->
+
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="hidden" name="spec_category[]" value="Processor">
+                                <input type="hidden" name="spec_key[]" value="EDLA">
+                                <input type="hidden" name="spec_value[]" value="No">
+
+                                <input type="checkbox" value="Yes"
+                                    onchange="this.previousElementSibling.value = this.checked ? 'Yes' : 'No';">
+
+                                EDLA
+                            </label>
+                        </div>
+
+                        <!-- NFC -->
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="hidden" name="spec_category[]" value="Processor">
+                                <input type="hidden" name="spec_key[]" value="NFC">
+                                <input type="hidden" name="spec_value[]" value="No">
+
+                                <input type="checkbox" value="Yes"
+                                    onchange="this.previousElementSibling.value = this.checked ? 'Yes' : 'No';">
+
+                                NFC
+                            </label>
+                        </div>
+
+
+
 
                         <div class="full-width">
                             <h3 class="spec-title">
@@ -231,93 +194,41 @@
                         <div class="form-group">
                             <label>Touch Type</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Touch"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Touch">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Touch Type"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Touch Type">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="Infrared"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="Infrared">
                         </div>
 
                         <div class="form-group">
                             <label>Touch Count</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Touch"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Touch">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Touch Count"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Touch Count">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="20 Points"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="20 Points">
                         </div>
 
                         <div class="form-group">
                             <label>Touch Accuracy</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Touch"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Touch">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Touch Accuracy"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Touch Accuracy">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="±1mm"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="±1mm">
                         </div>
 
                         <div class="form-group">
                             <label>Response Time</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Touch"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Touch">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Response Time"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Response Time">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="8ms"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="8ms">
                         </div>
 
                         <!-- ===================== -->
@@ -333,93 +244,42 @@
                         <div class="form-group">
                             <label>Speakers</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Input/Output"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Input/Output">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Speakers"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Speakers">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="2 x 15W"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="2 x 15W">
                         </div>
 
                         <div class="form-group">
                             <label>Microphone</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Input/Output"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Input/Output">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Microphone"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Microphone">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="8 Array Mic"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="8 Array Mic">
                         </div>
 
                         <div class="form-group">
                             <label>Camera</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Input/Output"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Input/Output">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Camera"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Camera">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="48MP AI Camera"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="48MP AI Camera">
                         </div>
 
                         <div class="form-group full-width">
                             <label>Interfaces</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Input/Output"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Input/Output">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Interface"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Interface">
 
-                            <textarea
-                                name="spec_value[]"
-                                rows="3"
-                                class="product-input"
-                                placeholder="HDMI, USB, Type-C, LAN..."
-                            ></textarea>
+                            <textarea name="spec_value[]" rows="3" class="product-input"
+                                placeholder="HDMI, USB, Type-C, LAN..."></textarea>
                         </div>
 
                         <!-- ===================== -->
@@ -435,93 +295,41 @@
                         <div class="form-group">
                             <label>Net Weight</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Package"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Package">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Net Weight"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Net Weight">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="32kg"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="32kg">
                         </div>
 
                         <div class="form-group">
                             <label>Gross Weight</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Package"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Package">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Gross Weight"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Gross Weight">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="38kg"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="38kg">
                         </div>
 
                         <div class="form-group">
                             <label>Bare Machine Size</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Package"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Package">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Bare Machine Size"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Bare Machine Size">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="1480x900x80 mm"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="1480x900x80 mm">
                         </div>
 
                         <div class="form-group">
                             <label>Package Size</label>
 
-                            <input
-                                type="hidden"
-                                name="spec_category[]"
-                                value="Package"
-                            >
+                            <input type="hidden" name="spec_category[]" value="Package">
 
-                            <input
-                                type="hidden"
-                                name="spec_key[]"
-                                value="Package Size"
-                            >
+                            <input type="hidden" name="spec_key[]" value="Package Size">
 
-                            <input
-                                type="text"
-                                name="spec_value[]"
-                                class="product-input"
-                                placeholder="1600x1020x200 mm"
-                            >
+                            <input type="text" name="spec_value[]" class="product-input" placeholder="1600x1020x200 mm">
                         </div>
 
                         <!-- ===================== -->
@@ -532,29 +340,18 @@
 
                             <label>Product Images</label>
 
-                            <input
-                                type="file"
-                                name="images"
-                                multiple
-                                class="product-input"
-                            >
+                            <input type="file" name="images" multiple class="product-input">
                         </div>
 
                     </div>
 
                     <div class="form-actions">
 
-                        <a
-                            href="/products"
-                            class="btn-secondary"
-                        >
+                        <a href="/products" class="btn-secondary">
                             Cancel
                         </a>
 
-                        <button
-                            type="submit"
-                            class="btn-primary"
-                        >
+                        <button type="submit" class="btn-primary">
                             Save Product
                         </button>
 

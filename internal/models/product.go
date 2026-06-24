@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Product struct {
 	ID int64 `json:"id"`
@@ -42,20 +44,64 @@ type Product struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+// func (p Product) GetSpecValue(category string, key string) string {
+
+// 	for _, specCategory := range p.Specifications {
+
+// 		if specCategory.Category == category {
+
+// 			for _, item := range specCategory.Items {
+
+// 				if item.SpecKey == key {
+// 					return item.SpecValue
+// 				}
+// 			}
+// 		}
+// 	}
+
+// 	return ""
+// }
+
 func (p Product) GetSpecValue(category string, key string) string {
 
+	// log.Printf(
+	// 	"Searching category=%s key=%s",
+	// 	category,
+	// 	key,
+	// )
+
 	for _, specCategory := range p.Specifications {
+
+		// log.Printf(
+		// 	"Category=%s",
+		// 	specCategory.Category,
+		// )
 
 		if specCategory.Category == category {
 
 			for _, item := range specCategory.Items {
 
+				// log.Printf(
+				// 	"item key=%s value=%s",
+				// 	item.SpecKey,
+				// 	item.SpecValue,
+				// )
+
 				if item.SpecKey == key {
+
+					// log.Printf(
+					// 	"FOUND %s=%s",
+					// 	key,
+					// 	item.SpecValue,
+					// )
+
 					return item.SpecValue
 				}
 			}
 		}
 	}
+
+	// log.Printf("NOT FOUND")
 
 	return ""
 }

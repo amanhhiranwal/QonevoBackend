@@ -297,6 +297,8 @@ func (r *ProductRepository) GetProductByID(
 
 	product.Specifications = specifications
 
+	// log.Printf("%+v", product.Specifications)
+
 	return &product, nil
 }
 
@@ -315,8 +317,9 @@ func (r *ProductRepository) GetProductSpecifications(
 		spec_value
 	FROM product_specifications
 	WHERE product_id = $1
-	ORDER BY category ASC, id ASC
+	ORDER BY category ASC, id DESC
 	`
+	// ORDER BY category ASC, id ASC
 
 	rows, err := r.db.Query(
 		query,

@@ -243,6 +243,8 @@ func (s *ProductService) GetProductByID(
 
 	product.Specifications = specifications
 
+	// log.Printf("%+v", product.Specifications)
+
 	return product, nil
 }
 
