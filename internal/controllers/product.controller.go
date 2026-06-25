@@ -1409,3 +1409,61 @@ func (c *ProductController) UploadImages(
 		http.StatusSeeOther,
 	)
 }
+
+func (c *ProductController) GetIFPSizesAPI(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+
+	sizes, err := c.service.GetIFPSizes()
+
+	if err != nil {
+
+		http.Error(
+			w,
+			err.Error(),
+			http.StatusInternalServerError,
+		)
+
+		return
+	}
+
+	w.Header().Set(
+		"Content-Type",
+		"application/json",
+	)
+
+	json.NewEncoder(w).Encode(
+		models.SizesResponse{
+			Sizes: sizes,
+		},
+	)
+}
+
+func (c *ProductController) GetIFPFiltersAPI(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+
+	response, err := c.service.GetIFPFilters()
+
+	if err != nil {
+
+		http.Error(
+			w,
+			err.Error(),
+			http.StatusInternalServerError,
+		)
+
+		return
+	}
+
+	w.Header().Set(
+		"Content-Type",
+		"application/json",
+	)
+
+	json.NewEncoder(w).Encode(
+		response,
+	)
+}

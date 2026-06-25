@@ -920,3 +920,120 @@ ORDER BY p.created_at DESC
 
 	return r.scanProducts(rows)
 }
+
+func (r *ProductRepository) GetDistinctSizesByType(
+	productType string,
+) ([]string, error) {
+
+	query := `
+	SELECT DISTINCT ps.spec_value
+	FROM product_specifications ps
+	INNER JOIN products p
+		ON p.id = ps.product_id
+	WHERE p.product_type = $1
+		AND LOWER(ps.spec_key) = 'size'
+	ORDER BY ps.spec_value
+	`
+
+	rows, err := r.db.Query(
+		query,
+		productType,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var sizes []string
+
+	for rows.Next() {
+
+		var size string
+
+		if err := rows.Scan(&size); err != nil {
+			return nil, err
+		}
+
+		sizes = append(sizes, size)
+	}
+
+	return sizes, nil
+}
+
+func (r *ProductRepository) GetDistinctSpecValues(
+	specKey string,
+) ([]string, error) {
+
+	query := `
+	SELECT DISTINCT spec_value
+	FROM product_specifications
+	WHERE spec_key = $1
+	AND spec_value <> ''
+	ORDER BY spec_value
+	`
+
+	rows, err := r.db.Query(query, specKey)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var values []string
+
+	for rows.Next() {
+
+		var value string
+
+		if err := rows.Scan(&value); err != nil {
+			return nil, err
+		}
+
+		values = append(values, value)
+	}
+
+	return values, nil
+}
+
+// func (r *ProductRepository) GetDistinctStorages() (
+// 	[]string,
+// 	error,
+// ) {
+
+// 	query := `
+// 	SELECT DISTINCT storage
+// 	FROM products
+// 	WHERE storage IS NOT NULL
+// 	AND storage <> ''
+// 	ORDER BY storage
+// 	`
+
+// 	rows, err := r.db.Query(query)
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	defer rows.Close()
+
+// 	var storages []string
+
+// 	for rows.Next() {
+
+// 		var storage string
+
+// 		if err := rows.Scan(&storage); err != nil {
+// 			return nil, err
+// 		}
+
+// 		storages = append(
+// 			storages,
+// 			storage,
+// 		)
+// 	}
+
+// 	return storages, nil
+// }

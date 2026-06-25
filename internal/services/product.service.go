@@ -442,3 +442,58 @@ func (s *ProductService) GetProductsByType(
 
 	return products, nil
 }
+
+func (s *ProductService) GetIFPSizes() (
+	[]string,
+	error,
+) {
+
+	return s.repo.GetDistinctSizesByType(
+		"IFP",
+	)
+}
+
+func (s *ProductService) GetIFPFilters() (
+	*models.IFPFiltersResponse,
+	error,
+) {
+
+	sizes, err := s.repo.GetDistinctSpecValues(
+		"Size",
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	processors, err := s.repo.GetDistinctSpecValues(
+		"Processor",
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	processorSpeeds, err := s.repo.GetDistinctSpecValues(
+		"Processor Speed",
+	)
+
+	// storages, err := s.repo.GetDistinctStorages()
+
+	if err != nil {
+		return nil, err
+	}
+
+	response := &models.IFPFiltersResponse{
+		Sizes:           sizes,
+		Processors:      processors,
+		ProcessorSpeeds: processorSpeeds,
+		// Storages:        storages,
+		SmartFeatures: []string{
+			"EDLA",
+			"NFC",
+		},
+	}
+
+	return response, nil
+}
